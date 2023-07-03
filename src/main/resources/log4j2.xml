@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO">
+    <Appenders>
+        <Async name="asyncAppender" bufferSize="1024">
+            <AppenderRef ref="fileAppender" />
+        </Async>
+        <File name="fileAppender" fileName="logs/application.log">
+            <PatternLayout pattern="%d %p %c{1.} [%t] %m%n" />
+        </File>
+    </Appenders>
+    <Loggers>
+        <Root level="info">
+            <AppenderRef ref="asyncAppender" />
+        </Root>
+    </Loggers>
+</Configuration>

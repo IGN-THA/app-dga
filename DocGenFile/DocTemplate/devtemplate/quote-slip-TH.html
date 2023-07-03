@@ -1,0 +1,1489 @@
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1"/>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@400;600&display=swap');
+    body { color:#003b71;font-size:12px; font-family: Prompt,Arial, Helvetica, sans-serif;
+       width: 600px; margin: 30px auto;line-height:1.5;}
+    * {word-break: break-word;}
+
+h1 { font-size: 26px;}
+.standing{
+
+display:flex;
+align-items:center;
+justify-content:center;
+height: 100%;
+
+}
+
+
+page {
+background: rgb(255, 255, 255);
+position:relative;
+display: block;
+margin: 0 auto;
+margin-bottom:0.7cm !important;
+padding-bottom: 70px !important;
+
+box-sizing:border-box;
+/* box-shadow: 0 0 0.5cm rgba(0,0,0,0.5); */
+}
+
+
+
+
+page[size="A4"] {
+width: 21cm;
+height: 29.7cm;
+}
+page[size="A4"][layout="landscape"] {
+width: 29.7cm;
+height: 21cm;
+}
+page[size="A3"] {
+width: 29.7cm;
+height: 42cm;
+}
+page[size="A3"][layout="landscape"] {
+width: 42cm;
+height: 29.7cm;
+}
+page[size="A5"] {
+width: 14.8cm;
+height: 21cm;
+}
+page[size="A5"][layout="landscape"] {
+width: 21cm;
+height: 14.8cm;
+}
+@media print {
+/* @page {
+    size: A4;
+    margin:  5mm ;
+    padding: 0mm;
+
+} */
+@page{
+    size: A4;
+    margin:  5mm   5mm  0mm 5mm;
+    padding: 0mm 0mm 2mm 0mm;
+
+}
+body,page  {
+margin: 0;
+box-shadow: 0;
+}
+body {
+            -webkit-print-color-adjust: exact;
+            -moz-print-color-adjust: exact;
+            -ms-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+}
+.text-left {text-align: left;}
+.text-right {text-align: right;}
+.text-center {text-align: center;}
+.t-upper{text-transform: uppercase;}
+.border-bottom-0{ border-bottom: 0 !important;}
+.border-bottom-1{ border-bottom: 1px solid #ccc !important;}
+.border-b-toppic:after {content:"";
+background: #FF5011;  background: linear-gradient(-90deg, rgba(255,80,17,1) 0%, rgba(255,105,17,1) 100%);
+display: block; margin: auto;
+border-radius: 100px; width: 100px; height: 6px; margin-top: 5px;}
+.box-shadow{ box-shadow: 0 0 20px #ccc;}
+.b-blue{background-color: #003b71;color: #FFF;}
+.b-g-blue{background: rgb(0,59,113);color: #FFF;
+background: linear-gradient(0deg, rgba(0,59,113,1) 0%, rgba(5,88,163,1) 100%);}
+.b-orange{background-color: #ff5011;color:#FFF;}
+.b-g-orange{background-color: #ff5011;color:#FFF;
+    background: linear-gradient(0deg, rgba(255,80,17,1) 0%, rgba(255,105,17,1) 100%);}
+.b-l-grey {background-color: #f0f0f1;}
+.b-l-orange {background-color: #ffdccf;}
+.b-g-grey {background: #f5f7f9;box-shadow: inset 0 0 20px #cfcfcf;}
+.b-w { background-color: #FFF;}
+.c-white {color:#FFF;}
+.c-black {color: #333;}
+.c-blue{color:#003b71}
+.c-l-blue{color:#0558a3}
+.c-grey{color:#57585b;}
+.c-l-grey{color:#888;}
+.c-orange{color:#ff5011;}
+.c-l-blue{color:#0558a3}
+.d-flex { display: flex; width: 100%; box-sizing: border-box;}
+.align-items-center { align-items: center; }
+.align-items-end { align-items: flex-end; }
+.justify-content-between{ justify-content: space-between;}
+.box-sizing{ box-sizing: border-box;}
+.bordertTop .b-blue,.bordertTop .b-g-blue { width: 70%;height: 10px;}
+.bordertTop .b-orange,.bordertTop .b-g-orange{ width: 30%;height: 10px;}
+.border-orange-r { border-right: #FF5011 solid 1px;}
+.border-orange-l { border-left: #FF5011 solid 2px;}
+.border-b-blue {border-bottom:solid 2px #034d90;}
+.p-absolute{position: absolute;}
+.p-relative{position: relative;}
+.letter-spacing-minus1{letter-spacing:-1px;}
+.py-0 {padding-top: 0; padding-bottom: 0;}
+.pt-4 { padding-top:2em !important;}
+.p-3 { padding:1.5em;}
+.p-2 { padding:1em;}
+.pt-3 { padding-top:1.5em;}
+.pb-3 { padding-bottom:1.5em;}
+.px-3 { padding-left:1.5em; padding-right:1.5em;}
+.py-3 { padding-top:1.5em !important; padding-bottom:1.5em !important;}
+.py-2 { padding-top:1em !important; padding-bottom:1em !important;}
+.py-1 { padding-top:0.5em !important; padding-bottom:0.5em !important;}
+.px-2 { padding-left:1em; padding-right:1em;}
+.pt-2 { padding-top:1em!important;}
+.pb-2 { padding-bottom:1em!important;}
+.pr-2 { padding-right:1em;}
+.pl-2 { padding-left:1em;}
+.pl-1 { padding-left:0.5em;}
+.pr-1 { padding-right:0.5em;}
+.pb-1 { padding-bottom:0.5em !important;}
+.pt-1 { padding-top:0.5em!important;}
+
+.px-1{ padding-left:0.5em; padding-right:0.5em;}
+.p-1 { padding:0.5em;}
+.mt-0 { margin-top: 0;}
+.my-0 {margin-top: 0; margin-bottom: 0;}
+.mt-1 {margin-top: 0.5em;}
+.mx-1 {margin-left: .5em; margin-right: .5em;}
+.my-1 {margin-top: .5em; margin-bottom: .5em;}
+.my-2 {margin-top: 1em; margin-bottom: 1em;}
+.mx-auto {margin-left: auto; margin-right: auto;}
+.mb-05 {margin-bottom: 0.25em;}
+.mb-3{ margin-bottom: 1.5em;}
+.mb-2{ margin-bottom: 1em;}
+.mr-2{ margin-right: 1em;}
+.mr-1{ margin-right: 0.5em;}
+.mb-1{ margin-bottom: 0.5em !important;}
+.mb-0{ margin-bottom: 0;}
+.m-0{margin:0;}
+.p-0{padding:0;}
+.ml-auto {margin-left: auto;}
+.mr-auto {margin-right: auto;}
+.l-h-1 { line-height: 1;}
+.l-h-11 { line-height: 1.1 !important;}
+.l-h-12 { line-height: 1.2 !important;}
+.l-h-13 { line-height: 1.3 !important;}
+
+.overflowHidden{ overflow: hidden;}
+.b-radiusx4 { border-radius: 4px;}
+.b-radiusx4-left-top { border-radius: 4px 0 0 0;}
+.b-radiusx4-right-top { border-radius: 0 4px 0 0;}
+.b-radiusx4-right-bottom { border-radius: 0 0 4px 0;}
+.b-radiusx4-left-bottom { border-radius:0 0 0 4px;}
+.b-radiusx4-left { border-radius:4px 0 0 4px;}
+.b-radiusx4-right { border-radius:0 4px 4px 0;}
+.b-radiusx4-bottom { border-radius:0 0 4px 4px;}
+.b-radiusx4-top { border-radius: 4px 4px 0 0;}
+.b-radiusx10 { border-radius: 10px;}
+.b-radiusx10-left-top { border-radius: 10px 0 0 0;}
+.b-radiusx10-right-top { border-radius: 0 10px 0 0;}
+.b-radiusx10-right-bottom { border-radius: 0 0 10px 0;}
+.b-radiusx10-left-bottom { border-radius:0 0 0 10px;}
+.b-radiusx10-bottom { border-radius:0 0 10px 10px;}
+.b-radiusx10-top { border-radius: 10px 10px 0 0;}
+
+
+.opacity-5{opacity: .5;}
+.border-radiusx100 {border-radius: 100px;}
+.rj-rewards-box { width:183px ;position: relative;}
+table {border-spacing: 0;}
+.float-left{float: left;}
+.float-right{float: right;}
+.f-w-normal { font-weight: normal;}
+.f-w-bolder { font-weight: bolder;}
+.f-11{font-size: 11px;}
+.f-10{font-size: 10px !important;}
+.f-8{font-size: 8px !important;}
+.f-9{font-size: 9px !important;}
+.f-12{font-size: 12px;}
+.f-13{font-size: 13px;}
+.f-14{font-size: 14px;}
+.f-15{font-size: 15px;}
+.f-16{font-size: 16px;}
+.f-18{font-size: 18px;}
+.f-20{font-size: 20px;}
+.f-30{font-size: 30px;}
+.f-40{font-size: 40px;}
+.w-250{ width: 250px;}
+.w-140{width:140px ;}
+.w-100{width: 100%; box-sizing: border-box;}
+.w-90 { width:90%;}
+.w-80 { width:80%;}
+.w-70 { width:70%;}
+.w-75 { width:75%;}
+.w-60 { width:60%;}
+.w-50 { width:50%;}
+.w-40 { width:40%;}
+.w-30 { width:30%;}
+.w-25 { width:25% }
+.w-24 { width:24% }
+.table{display: table;
+border-collapse: separate;
+box-sizing: border-box;
+text-indent: initial;
+border-spacing: 0px;
+font-size: 12px;
+border: 1px solid #ccc;
+}
+.table.A td {line-height: 1.3;}
+/* .table.A  tr:nth-child(2) td {padding-top: 10px;} */
+.table.A tr:nth-child(6) td {padding-bottom: 5px;}
+.table.B{ border:0 ; font-size: 11px;line-height: 1;}
+.table.B th,.table.B td { border-top:1px solid #ccc;border-left:1px solid #ccc; }
+.table.B tr:first-child  th:first-child {border-top:0;border-left:0;}
+.table.B tr:first-child  th{ border-left:0;}
+.table.B tr td:nth-child(3){ color:#ff5011;text-align: center;}
+.table.B td:not(:first-child) {border-left:0;}
+.table.B td:last-child {border-right:1px solid #ccc;}
+.table.B  tr:last-child td {border-bottom:1px solid #ccc;}
+.table.B tr:last-child  th {border-left:0; }
+
+.table.C td { line-height: 1.3; padding-top: 5px; padding-bottom: 5px;font-size: 11px;}
+.table.C tr:nth-child(2) td {padding-top: 10px;}
+.table.C tr:last-child td {padding-bottom: 10px;}
+.table th{
+padding: 6px 8px; font-size: 12px; font-weight: 600; line-height: 1.3; }
+
+.table td {
+padding:2px 8px ;
+
+}
+.table.B td {
+padding:5px 8px ;
+
+}
+.table tr td:not(:last-child){border-right: solid 1px #ccc;}
+.f-w-normal{font-weight: 400;}
+h3 { font-weight: 600;}
+
+.footer{   /*  position: absolute; */
+bottom: 0px;
+background: #FFF;height: 70px;
+}
+.footer-sologan{ border-left: 2px solid #ff5011; font-size:14px; line-height: 1.1;
+              padding-left: 10px; padding-top: 0px; padding-bottom: 0px; padding-right: 5px;
+}
+.clear { clear: both; float: none;}
+.verticle-middle { vertical-align: middle;}
+
+/*p2 control str*/
+.box-title{ position: relative;}
+.icon-jojo { position: absolute; top:-60px; left: 0; width:100%; margin: auto; text-align: center; }
+.b-g-l-orange {background: rgb(255,132,45);
+background: linear-gradient(180deg, rgba(255,132,45,1) 0%, rgba(255,115,65,1) 48%);}
+.b-rj-rewards { background: url(https://www.roojai.com/EmailTemplate/v1/common/slip/bg.png) no-repeat top right; background-size: auto 100.1%;}
+.border-white { border:1px solid #FFF;}
+.d-inline-block {display: inline-block;}
+.d-block {display: block;}
+/*p2 control end*/
+/*renew str*/
+/*renew str*/
+.p-mobile-renew{position: absolute; width: 225px;height:250px;top:-35px;right: 30px;}
+.banner-logo-container .img-logo {
+  max-height: 40px;
+  margin-right: 12px;
+}
+    /*renew end*/
+  </style>
+</head>
+<body>
+<page size="A4">
+  <div class="bordertTop d-flex">
+    <div class="b-blue"></div>
+    <div class="b-orange"></div>
+  </div>
+  <!-- header str -->
+  <div class="d-flex align-items-end px-3 l-h-12">
+
+    <div class="w-70">
+      <div class="pt-3 d-flex align-items-center banner-logo-container">
+        <img src="https://www.roojai.com/EmailTemplate/v1/Common/qa/roojai.png" class="mr-2 img-logo" />
+        <img src="https://www.roojai.com/EmailTemplate/v1/Common/qa/kpi.png" class="mr-2 img-logo"/>
+        <img th:if="${Service_provider!=null && Service_provider_imageUrl!=null}" th:src="${Service_provider_imageUrl}" class="mr-2 img-logo"/>
+      </div>
+    </div>
+    <div th:if="${Service_provider_account_source!='Traditional broker'}" class="w-30 text-right">
+      <div class="c-grey" th:if="${Service_provider!=null}"> [[${locales['Service_provider']}]]
+      </div>
+      <div th:if="${Service_provider!=null}"> [[${Service_provider}]]
+      </div>
+      <div class="c-grey">[[${locales['Quote_createdOn']}]] [[${@dateFormatter.format(Quote_createdOn,#locale)}]]</div>
+      ([[${locales['valid_for30Days']}]])
+    </div>
+
+    <div th:unless="${Service_provider_account_source!='Traditional broker'}" class="w-30 text-right">
+      <div class="c-grey" th:if="${Service_provider!=null}"> [[${locales['Service_provider']}]]
+      </div>
+      <div th:if="${Service_provider!=null}"> [[${Service_provider}]]
+      </div>
+    </div>
+
+  </div>
+  <div class="d-flex align-items-center justify-content-between px-3 py-2 l-h-12">
+    <div class="w-50">
+      <svg class="pr-1 float-left" width="25" height="25" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 92.65 92.65" style="enable-background:new 0 0 92.65 92.65;" xml:space="preserve">
+    <style type="text/css">
+      .stt0{fill:#F04923;}
+      .stt1{fill:#003B71;}
+      .stt2{opacity:0.3;fill:#003B71;}
+    </style>
+        <g>
+      <rect x="31.4" y="60.39" class="stt0" width="31.7" height="10.63"/>
+          <g id="cars_1_">
+        <g id="car_1_">
+          <path class="stt1" d="M84.48,33.14h-6.16l-5.33-14.51c-1.84-3.68-3.26-4.95-7.51-4.95H28.88c-4.26,0-5.68,1.27-7.51,4.95     l-5.33,14.51H9.87c-0.9,0-1.62,0.73-1.62,1.62v3.24c0,0.9,0.73,1.62,1.62,1.62h2.97l-1.35,3.24v37.3c0,0.89,0.73,1.62,1.62,1.62     h6.49c0.89,0,1.62-0.73,1.62-1.62v-4.87h25.95h25.95v4.87c0,0.89,0.73,1.62,1.62,1.62h6.49c0.89,0,1.62-0.73,1.62-1.62v-37.3     l-1.35-3.24h2.97c0.9,0,1.62-0.73,1.62-1.62v-3.24C86.1,33.87,85.37,33.14,84.48,33.14z M26.5,21.48     c0.41-0.71,0.96-1.31,1.97-1.31h37.4c1.01,0,1.56,0.6,1.97,1.31c0.54,1.19,3.85,14.91,3.85,14.91H22.65     C22.65,36.39,25.96,22.67,26.5,21.48z M27.71,55.85h-9.73l-3.24-3.24V45.8l12.97,3.57V55.85z M60.15,68.82H34.2v-6.49h25.95     V68.82z M79.61,52.61l-3.24,3.24h-9.73v-6.49l12.97-3.57V52.61z"/>
+          <path class="stt2" d="M26.5,21.48c0.41-0.71,0.96-1.31,1.97-1.31h37.4c1.01,0,1.56,0.6,1.97,1.31c0.54,1.19,3.85,14.91,3.85,14.91     H22.65C22.65,36.39,25.96,22.67,26.5,21.48z"/>
+        </g>
+      </g>
+    </g>
+    </svg>
+      <div class="c-grey f-9">[[${locales['Opportunity_number']}]]</div>
+      [[${Opportunity_number}]]
+    </div>
+
+    <div th:if="${Service_provider_account_source!='Traditional broker'}" class="rj-rewards-box b-l-orange border-radiusx100 overflowHidden ">
+
+      <div class="w-140 mx-auto">
+
+        <div class="  float-left  p-1">
+          <img src="https://www.roojai.com/EmailTemplate/v1/common/slip/gifticon.png" width="28" />
+        </div>
+        <div class="float-left c-blue text-left l-h-12 pt-1">
+          Roojai Rewards
+
+          <div class="c-orange ">
+            <span class="f-14">[[${@currencyFormatter.format(rjReward, #locale)}]]</span>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div th:unless="${Service_provider_account_source!='Traditional broker'}" class="w-30 text-right">
+      <div class="c-grey">[[${locales['Quote_createdOn']}]] [[${@dateFormatter.format(Quote_createdOn,#locale)}]]</div>
+      ([[${locales['valid_for30Days']}]])
+    </div>
+
+  </div>
+  <!-- header end-->
+  <div class="mainContent px-3">
+
+    <!-- left main str-->
+    <div class="w-75 mr-auto float-left"  >
+      <!-- Total annual price str-->
+      <table class="w-100 table A mr-2 mb-1 border-bottom-0 b-radiusx4">
+        <tr>
+          <th class="b-g-blue text-left w-75 b-radiusx4-left-top">
+            [[${locales['Total_AnnualPrice']}]]
+          </th>
+          <th class="b-g-orange text-right w-25 b-radiusx4-right-top">
+            [[${@currencyFormatter.format(Total_AnnualPrice, #locale)}]]
+          </th>
+        </tr>
+
+        <tr>
+          <td  class="b-l-grey border-bottom-1" colspan="2">
+            [[${locales['Details.header']}]]
+          </td>
+
+        </tr>
+        <tr>
+          <td class="pt-1">
+            <span class="c-orange pr-1">&#8226;</span>[[${locales['Voluntary_premium']}]]
+          </td>
+          <td class="text-right c-orange pt-2">
+            [[${@currencyFormatter.format(Voluntary_premium, #locale)}]]
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span class="c-orange pr-1">&#8226;</span>[[${locales['Compulsory_premium']}]]
+          </td>
+          <td class="text-right c-orange">
+            [[${
+            Compulsory_carInsurance=='Included' ?
+            @currencyFormatter.format(Comp_price, #locale) :
+            '-'
+            }]]
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <span class="c-orange pr-1">&#8226;</span>[[${locales['Premium_addon_cost']}]]</td>
+          <td class="text-right c-orange">
+            [[${
+            Other_Add_on_price!='0' ?
+            @currencyFormatter.format(Other_Add_on_price, #locale)
+            : '-'
+            }]]
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span class="c-orange pr-1">&#8226;</span>[[${locales['Payment_frequency']}]]
+          </td>
+          <td class="text-right c-orange">
+            [[${Payment_frequency=='Yearly' ? locales['payment_freq_01'] : locales['payment_freq_03']}]]
+          </td>
+        </tr>
+        <tr>
+          <th class="b-g-blue text-left f-w-normal b-radiusx4-left-bottom ">
+            [[${locales['Sum_insured']}]]
+          </th>
+          <th class="b-g-orange text-right w-30 b-radiusx4-right-bottom ">
+            [[${@currencyFormatter.format(Sum_insured, #locale)}]]
+          </th>
+        </tr>
+      </table>
+      <!-- Total annual price end-->
+      <!-- Your product selection str-->
+      <h3 class="px-1 m-0 mb-2 pt-0">
+        [[${locales['Your_product_selection']}]]
+      </h3>
+      <table class="table w-100 f-10 mb-2 b-radiusx4">
+
+        <tr>
+          <td class="b-l-grey w-30 text-right pt-1 b-radiusx4-left-top">
+            [[${locales['Plan_type']}]]
+          </td>
+          <td class="c-grey pt-1" th:if="${Plan_type.toString()=='TYPE_1'}">[[${locales['Plan_type1']}]]</td>
+          <td class="c-grey pt-1" th:if="${Plan_type.toString()=='TYPE_2'}">[[${locales['Plan_type2']}]]</td>
+          <td class="c-grey pt-1" th:if="${Plan_type.toString()=='TYPE_3'}">[[${locales['Plan_type3']}]]</td>
+          <td class="c-grey pt-1" th:if="${Plan_type.toString()=='TYPE_2_PLUS'}">[[${locales['Plan_type2Plus']}]]</td>
+          <td class="c-grey pt-1" th:if="${Plan_type.toString()=='TYPE_3_PLUS'}">[[${locales['Plan_type3Plus']}]]</td>
+        </tr>
+        <tr>
+          <td class="b-l-grey w-30 text-right">
+            [[${locales['Insured_vehicle']}]]
+          </td>
+          <td class="c-grey">
+            [[${Insured_vehicle.make}]] /
+            [[${Insured_vehicle.model}]] /
+            [[${Insured_vehicle.subModel}]] /
+            [[${Insured_vehicle.year}]]
+          </td>
+        </tr>
+        <tr>
+          <td class="b-l-grey w-30 text-right">
+            [[${locales['Excess']}]]
+          </td>
+          <td th:if="${Excess > 0}" class="c-grey">
+            [[${@currencyFormatter.format(Excess, #locale)}]] ([[${locales['excess.note']}]])
+          </td>
+          <td th:if="${Excess==0}" class="c-grey">
+            [[${@currencyFormatter.format(Excess, #locale)}]]
+          </td>
+        </tr>
+        <tr>
+          <td class="b-l-grey w-30 text-right ">
+            [[${locales['DriverPlan']}]]
+          </td>
+          <td class="c-grey " th:if="${DriverPlan=='AnyDriver' || DriverPlan=='Any'}">[[${locales['DriverPlan_AnyDrivers']}]]</td>
+          <td class="c-grey " th:if="${DriverPlan=='NamedDriver' || DriverPlan=='Named'}">[[${locales['DriverPlan_NamedDrivers']}]]</td>
+          <td class="c-grey " th:if="${DriverPlan=='Above25' || DriverPlan=='AnyOver25' || DriverPlan=='Driver>25'}">[[${locales['DriverPlan_Above25']}]]</td>
+          <td class="c-grey " th:if="${DriverPlan=='Above30' || DriverPlan=='AnyOver30' || DriverPlan=='Driver>30'}">[[${locales['DriverPlan_Above30']}]]</td>
+        </tr>
+        <tr>
+          <td class="b-l-grey w-30 text-right pb-1 b-radiusx4-left-bottom">
+            [[${locales['GaragePlan']}]]
+          </td>
+          <td class="c-grey pb-1" th:if="${GaragePlan=='PanelWorkshop'}" >[[${locales['GaragePlan_Panel']}]]</td>
+          <td class="c-grey pb-1" th:if="${GaragePlan=='AnyWorkshop'}" >[[${locales['GaragePlan_Any']}]]</td>
+        </tr>
+
+      </table>
+      <!-- Your product selection end-->
+      <!--  Coverage str -->
+
+
+      <table class="table B w-100  ">
+        <tr>
+          <th class="text-left">
+            <h3 class="p-0 m-0">[[${locales['Coverage']}]]</h3>
+          </th>
+          <th class="b-g-blue  w-25 b-radiusx4-left-top f-10">
+            [[${locales['Covers_upTo']}]]
+          </th>
+          <th class="b-g-orange  w-25 b-radiusx4-right-top f-10">
+            [[${locales['Premium_addon_cost_header']}]]
+          </th>
+        </tr>
+        <tr>
+          <td colspan="3" class="b-l-grey b-radiusx4-left-top">
+            <strong>[[${locales['Damage_toYourCar']}]]</strong>
+          </td>
+
+        </tr>
+        <tr>
+          <td class="c-grey">
+            <span class="c-orange pr-1">&#8226;</span>[[${locales['hit_another_vehicle']}]]
+          </td>
+          <td class="text-right">
+            [[${Plan_type.collisionWithoutThirdParty ? @currencyFormatter.format(Sum_insured, #locale) : '-'}]]
+          </td>
+          <td>
+
+          </td>
+        </tr>
+        <tr>
+          <td class="c-grey">
+            <span class="c-orange pr-1">&#8226;</span>[[${locales['another_vehicle_hits_you']}]]
+          </td>
+          <td class="text-right">
+            [[${Plan_type.collisionWithAnotherVehicle ? @currencyFormatter.format(Sum_insured, #locale) : '-'}]]
+          </td>
+          <td>
+
+          </td>
+        </tr>
+        <tr>
+          <td class="c-grey">
+            <span class="c-orange pr-1">&#8226;</span>[[${locales['crash_by_yourself']}]]
+          </td>
+          <td class="text-right">
+            [[${Plan_type.crashByYourself ? @currencyFormatter.format(Sum_insured, #locale) : '-'}]]
+          </td>
+          <td>
+
+          </td>
+        </tr>
+        <tr>
+          <td class="c-grey">
+            <span class="c-orange pr-1">&#8226;</span>[[${locales['windscreen_damaged']}]]
+          </td>
+          <td class="text-right">  [[${  Plan_type.toString()=='TYPE_1' ?  locales['market_price'] :  '-'  }]]</td>
+          <td>
+
+          </td>
+        </tr>
+        <tr>
+          <td class="c-grey">
+            <span class="c-orange pr-1">&#8226;</span>[[${locales['Theft']}]]
+          </td>
+          <td class="text-right">
+            [[${Plan_type.theft ? @currencyFormatter.format(Sum_insured, #locale) : '-'}]]
+          </td>
+          <td>
+
+          </td>
+        </tr>
+        <tr>
+          <td class="c-grey">
+            <span class="c-orange pr-1">&#8226;</span>[[${locales['Fire']}]]
+          </td>
+          <td class="text-right">
+            [[${Plan_type.fire ? @currencyFormatter.format(Sum_insured, #locale) : '-'}]]
+          </td>
+          <td>
+
+          </td>
+        </tr>
+        <tr>
+          <td class="c-grey" th:if="${Plan_type.naturalDisaster && Plan_type.flood}">
+            <span class="c-orange pr-1">&#8226;</span>[[${locales['Flood']}]]
+          </td>
+          <td class="c-grey" th:if="${!Plan_type.naturalDisaster && Plan_type.flood}">
+            <span class="c-orange pr-1">&#8226;</span>[[${locales['only_flood']}]]
+          </td>
+          <td class="c-grey" th:if="${!Plan_type.naturalDisaster && !Plan_type.flood}">
+            <span class="c-orange pr-1">&#8226;</span>[[${locales['Flood']}]]
+          </td>
+          <td class="text-right">
+            [[${Plan_type.naturalDisaster || Plan_type.flood ? @currencyFormatter.format(Sum_insured, #locale) : '-'}]]
+          </td>
+          <td>
+
+          </td>
+        </tr>
+        <tr>
+          <td class="c-grey">
+            <span class="c-orange pr-1">&#8226;</span>[[${locales['towing']}]]
+          </td>
+          <td class="text-right">    
+          [[${
+            Plan_type.towing==true ? 
+            locales['tow_to_nearest_garage'] :
+            '-'
+          }]]
+          </td>
+          <td>
+
+          </td>
+        </tr>
+
+
+        <tr>
+          <td colspan="3" class="b-l-grey">
+            <strong>[[${locales['Damage_toOther']}]]</strong>
+          </td>
+
+        </tr>
+        <tr>
+          <td class="c-grey">
+            <span class="c-orange pr-1">&#8226;</span>[[${locales['Property_damage_per_accident']}]]
+          </td>
+          <td class="text-right">
+            [[${@currencyFormatter.format(Property_damage, #locale)}]]
+          </td>
+          <td>
+
+          </td>
+        </tr>
+        <tr>
+          <td class="c-grey">
+            <span class="c-orange pr-1">&#8226;</span>[[${locales['BodilyInjury_perPerson']}]]
+          </td>
+          <td class="text-right">
+            [[${@currencyFormatter.format(BodilyInjury_perPerson, #locale)}]]
+          </td>
+          <td>
+            [[${@currencyFormatter.format(Tpbi_price, #locale)}]]
+          </td>
+        </tr>
+        <tr>
+          <td class="c-grey">
+            <span class="c-orange pr-1">&#8226;</span>[[${locales['BodilyInjury_perAccident']}]]
+          </td>
+          <td class="text-right">
+            [[${@currencyFormatter.format(BodilyInjury_perAccident, #locale)}]]
+          </td>
+          <td>
+
+          </td>
+        </tr>
+        <tr>
+          <td colspan="3" class="b-l-grey">
+            <strong>[[${locales['Additional_coverage']}]] </strong>
+          </td>
+
+        </tr>
+        <tr>
+          <td class="c-grey">
+            <span class="c-orange pr-1">&#8226;</span>[[${locales['Addon_accessories']}]]
+          </td>
+          <td class="text-right">
+            [[${@currencyFormatter.format(Addon_accessories_SI, #locale)}]]
+          </td>
+          <td>
+            [[${@currencyFormatter.format(Addon_accessories_price, #locale)}]]
+          </td>
+        </tr>
+        <tr>
+          <td class="c-grey">
+            <span class="c-orange pr-1">&#8226;</span>[[${locales['MedicalExpense_you_your_passengers']}]]
+          </td>
+          <td class="text-right">
+            [[${@currencyFormatter.format(Medical_Expenses_SI, #locale)}]]
+          </td>
+          <td rowspan="2">
+            [[${@currencyFormatter.format(Pame_price, #locale)}]]
+          </td>
+        </tr>
+        <tr>
+          <td class="c-grey">
+            <span class="c-orange pr-1">&#8226;</span>[[${locales['PersonalAccident_you_your_passengers']}]]
+          </td>
+          <td class="text-right">
+            [[${@currencyFormatter.format(PersonalAccident_you_your_passengers, #locale)}]]
+          </td>
+
+        </tr>
+        <tr>
+          <td class="c-grey"> <span class="c-orange pr-1">&#8226;</span>[[${locales['Bailbond']}]]
+          </td>
+          <td class="text-right f-8 l-h-13"> [[${locales['as_per_policy_schedule_01']}]] <br />
+              [[${locales['as_per_policy_schedule_02']}]]
+          </td>
+          <td> </td>
+        </tr>
+
+        <tr>
+          <td class="c-grey">
+            <span class="c-orange pr-1">&#8226;</span>[[${locales['Roadside_assistance']}]]
+          </td>
+          <td class="text-right">
+            [[${
+            Roadside_assistance=='Included' ?
+            locales['included'] :
+            locales['not_included']
+            }]]
+          </td>
+          <td>
+            [[${@currencyFormatter.format(Rsa_price, #locale)}]]
+          </td>
+        </tr>
+        <tr>
+          <td class="c-grey  ">
+            <span class="c-orange pr-1">&#8226;</span>[[${locales['Car_replacement']}]]
+          </td>
+          <td class="text-right">
+            [[${
+            Car_replacement=='Included' ?
+            locales['included'] :
+            locales['not_included']
+            }]]
+          </td>
+          <td>
+            [[${@currencyFormatter.format(Car_Replacement_price, #locale)}]]
+          </td>
+        </tr>
+        <tr>
+          <td colspan="3" class="b-l-grey">
+            <strong>[[${locales['Compulsory_carInsurance']}]]</strong>
+          </td>
+
+        </tr>
+        <tr>
+          <td class="c-grey">
+            <span class="c-orange pr-1">&#8226;</span>[[${locales['Compulsory_premium']}]]
+          </td>
+          <td class="text-right">
+            [[${
+            Compulsory_carInsurance=='Included' ?
+            locales['included'] :
+            locales['not_included']
+            }]]
+          </td>
+          <td>
+            [[${
+            Compulsory_carInsurance=='Included' ?
+            @currencyFormatter.format(Comp_price, #locale):
+            '-'
+            }]]
+          </td>
+        </tr>
+        <tr>
+          <th></th>
+          <th></th>
+          <th class="b-g-orange b-radiusx4-bottom">
+            <small class="f-w-normal pb-1 f-9">[[${locales['add_on_total']}]]</small>
+            <h3 class="m-0">[[${@currencyFormatter.format(Add_on_price, #locale)}]]</h3>
+          </th>
+        </tr>
+      </table>
+
+      <!--  Coverage end -->
+
+
+
+    </div>
+    <!-- left main end-->
+    <!-- Right main str-->
+    <div class="w-24  ml-auto "  >
+
+      <table class="table C c-grey mb-1 b-radiusx4 ">
+        <tr>
+          <th class="b-g-blue text-left verticle-middle d-flex align-items-center b-radiusx4-top">
+
+            <?xml version="1.0" encoding="utf-8"?>
+            <!-- Generator: Adobe Illustrator 25.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+            <svg class="mr-1" style="width:15px; height:15px; enable-background:new 0 0 20 20;" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                 viewBox="0 0 20 20" xml:space="preserve">
+                <style type="text/css">
+                  .st0{fill:#FAD0A1;}
+                  .st1{fill:#FF5011;}
+                  .st2{fill:#FFFFFF;}
+                </style>
+              <g>
+                  <g>
+                    <path class="st0" d="M16.3,9.7C16.2,9.3,15.9,9,15.5,9H8.8L7.6,7.6C7.4,7.3,7,7.1,6.6,7.1H2.3C2,7.1,1.7,7.2,1.5,7.5
+                      C1.3,7.7,1.2,8,1.3,8.3L1.4,9H1.3C1.1,9,0.8,9.1,0.7,9.3C0.5,9.5,0.5,9.7,0.5,9.9l1.3,8.7c0.1,0.5,0.5,0.9,1.1,0.9h13.9
+                      c0.2,0,0.5-0.1,0.6-0.3c0.2-0.2,0.2-0.4,0.2-0.7L16.3,9.7z"/>
+                    <path class="st1" d="M13,3.2H7.8c-0.4,0-0.6,0.3-0.6,0.7s0.3,0.7,0.6,0.7H13c0.4,0,0.6-0.3,0.6-0.7S13.3,3.2,13,3.2z"/>
+                    <path class="st0" d="M19.1,8c-0.1-0.2-0.4-0.3-0.6-0.3H17l0.3,3.1l0.8,5.4l1.1-7.6C19.3,8.4,19.2,8.2,19.1,8z"/>
+                    <path class="st2" d="M5.9,1.8H15V8h1.3V1.4c0-0.4-0.4-0.8-0.8-0.8h-10C4.9,0.6,4.5,1,4.5,1.5v4.8h1.4V1.8z"/>
+                    <path class="st1" d="M13,5.7H7.8C7.5,5.7,7.2,6,7.2,6.3C7.6,6.4,8,6.6,8.3,7l0.1,0.1H13c0.4,0,0.6-0.3,0.6-0.7
+                      C13.6,6.1,13.3,5.7,13,5.7z"/>
+                  </g>
+                </g>
+                </svg>
+
+
+
+
+            [[${locales['Quotation_information']}]]
+          </th>
+        </tr>
+
+        <tr>
+          <td>
+            [[${locales['Car_camera']}]]
+            <div class="c-l-blue" th:if="${Car_camera=='Yes'}">[[${locales['yes']}]]</div>
+            <div class="c-l-blue" th:if="${Car_camera=='No'}">[[${locales['no']}]]</div>
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            [[${locales['Odometer_reading']}]]
+            <div class="c-l-blue">[[${#numbers.formatDecimal(Odometer_reading, 0, 0)}]]</div>
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            [[${locales['Car_usage']}]] <!-- <div class="c-l-blue">[[${locales[Car_usage]}]]</div> -->
+            <div class="c-l-blue" th:if="${Car_usage=='Social, pleasure and travelling'}">[[${locales['personalUsage']}]]</div>
+            <div class="c-l-blue" th:if="${Car_usage=='Driving to and back from work'}">[[${locales['toGoToOrFromAPlaceOfWork']}]]</div>
+            <div class="c-l-blue" th:if="${Car_usage=='To support a business'}">[[${locales['toSupportABusinessOrJob']}]]</div>
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            [[${locales['Number_AccidentsIn12Months']}]]
+            <div class="c-l-blue" th:if="${Driver_Number_AccidentsIn12Months=='None' || Driver_Number_AccidentsIn12Months=='0'}">0</div>
+            <div class="c-l-blue" th:if="${Driver_Number_AccidentsIn12Months=='1' || Driver_Number_AccidentsIn12Months=='2'}">[[${Driver_Number_AccidentsIn12Months}]]</div>
+            <div class="c-l-blue" th:if="${Driver_Number_AccidentsIn12Months=='3 or more'}">[[${locales['number_accidentIn12Months_3_more']}]]</div>
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            [[${locales['Car_financing']}]]
+            <div class="c-l-blue" th:if="${Car_financing==null}"> - </div>
+            <div class="c-l-blue" th:if="${Car_financing=='Yes'}">[[${locales['yes']}]]</div>
+            <div class="c-l-blue" th:if="${Car_financing=='No'}">[[${locales['no']}]]</div>
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            [[${locales['Gender_MaritalStatus']}]]
+            <div class="c-l-blue" th:if="${Driver_Gender_MaritalStatus=='Male / Single'}">[[${locales['single_man']}]]</div>
+            <div class="c-l-blue" th:if="${Driver_Gender_MaritalStatus=='Male / Married'}">[[${locales['married_man']}]]</div>
+            <div class="c-l-blue" th:if="${Driver_Gender_MaritalStatus=='Female / Single'}">[[${locales['single_woman']}]]</div>
+            <div class="c-l-blue" th:if="${Driver_Gender_MaritalStatus=='Female / Married'}">[[${locales[married_woman]}]]</div>
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            [[${locales['Date_of_birth']}]]
+            <div class="c-l-blue">[[${@dateFormatter.format(Driver_Dob,#locale)}]]</div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            [[${locales['Driving_experience']}]]
+            <div class="c-l-blue" th:switch="${Driver_Driving_Experience}">
+              <span th:case="'6+'">[[${locales['years.of.driving.experience.more.than.6years']}]]</span>
+              <span th:case="'0'">[[${locales['years.of.driving.experience.less.than.year']}]]</span>
+              <span th:case="*">[[${Driver_Driving_Experience}]]</span>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            [[${locales['Postal_code']}]]
+            <div class="c-l-blue">[[${Postal_code}]]</div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            [[${locales['No_Claim_bonus']}]]
+            <div class="c-l-blue" th:switch="${No_Claim_bonus}">
+              <span th:case="'N'">[[${locales['ncb_dont_know']}]]</span>
+              <span th:case="*">[[${No_Claim_bonus}]]%</span>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            [[${locales['Tentative_start_date']}]]
+            <div class="c-l-blue" th:if="${Tentative_start_date=='Today'}">[[${locales['today']}]]</div>
+            <div class="c-l-blue" th:if="${Tentative_start_date=='Tomorrow'}">[[${locales['tomorrow']}]]</div>
+            <div class="c-l-blue" th:if="${Tentative_start_date=='Other'}">[[${locales['later']}]]</div>
+          </td>
+        </tr>
+
+
+
+      </table>
+      <p class="f-8 c-l-grey mt-0 mb-3">
+        [[${locales['please_notice_that_you_confirm']}]]
+      </p>
+      <table class="table C c-grey mb-2 w-100 b-radiusx4 ">
+        <tr>
+          <th class="b-g-blue text-left d-flex align-items-center b-radiusx4-top">
+            <?xml version="1.0" encoding="utf-8"?>
+            <!-- Generator: Adobe Illustrator 25.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+            <svg class="mr-1" style="width:15px; height:15px; enable-background:new 0 0 20 20;" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                 viewBox="0 0 10 10" xml:space="preserve">
+              <style type="text/css">
+                .st0{fill-rule:evenodd;clip-rule:evenodd;fill:#ace6ff;}
+                .st1{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFFFF;}
+              </style>
+              <g>
+                <path class="st0" d="M3.6,2h5.8L6,4.4L3.6,2.8C3.7,2.5,3.7,2.3,3.6,2L3.6,2z M9.9,2.3L6.1,4.9C6,4.9,5.9,4.9,5.8,4.9L3.4,3.2
+                  c0,0-0.1,0.1-0.2,0.1L2.7,3.6c0.3,0.9,1,2.1,1.6,2.8l0.5-0.3C5.3,5.9,6,6,6.2,6.5l0.5,0.8h2.8c0.2,0,0.4-0.2,0.4-0.4L9.9,2.3
+                  C9.9,2.4,9.9,2.3,9.9,2.3L9.9,2.3z"/>
+                <path class="st1" d="M2.1,3.4L3,2.9c0.3-0.2,0.3-0.5,0.2-0.7L2.4,0.8C2.3,0.7,2.2,0.6,2,0.6c-0.2,0-0.3,0-0.4,0.1l-1.4,1
+                  c-0.7,2.3,2.3,7.4,4.6,8l1.5-0.7c0.1-0.1,0.2-0.2,0.3-0.3c0-0.2,0-0.3,0-0.4L5.8,6.8C5.7,6.5,5.3,6.4,5.1,6.6L4.2,7
+                  C3.4,6.3,2.3,4.5,2.1,3.4L2.1,3.4z"/>
+              </g>
+              </svg>
+            [[${locales['Contact_information']}]]
+          </th>
+        </tr>
+
+        <tr>
+          <td>
+            [[${locales['Email']}]]
+            <div  class="c-l-blue">[[${PhAccount_Email}]]</div>
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            [[${locales['PhoneNumber']}]]
+            <div class="c-l-blue">[[${PhAccount_PhoneNumber}]]</div>
+          </td>
+        </tr>
+      </table>
+      <table class="table C c-grey mb-2 w-100 b-radiusx4 ">
+
+
+        <tr>
+          <td class="c-blue text-center py-3">
+            <strong class="c-blue">[[${locales['customize_more']}]]<br>
+              [[${locales['scan_qr_below']}]]</strong>
+            <br>
+            <img th:src="${'data:image/png;base64,' + @qrCodeService.encodeBase64(@qrCodeService.generateQRData(retrieveQuotationLink, 100, 100))}" style="width:2.6458333333cm;height:2.6458333333cm;" alt="No image"/>
+            <br>
+            <div class="c-l-blue f-10" style="word-break: break-word;">
+              [[${retrieveQuotationLink}]]
+            </div>
+          </td>
+        </tr>
+
+
+      </table>
+
+    </div>
+    <!-- Right main end-->
+
+
+  </div>
+  <div class="clear"></div>
+  <div class="footer px-2 pt-0 w-100 p-absolute">
+
+    <div class=" w-60 float-left">
+      <div class="footer-sologan">
+
+        รู้ใจ ประกันออนไลน์
+        <div class="c-orange">
+          รู้ใจกว่า ประหยัดกว่า
+        </div>
+      </div>
+    </div>
+    <div class=" float-right w-40">
+
+
+      <div class="  float-right l-h-13">
+        <small class="c-blue f-11 ">สอบถามเพิ่มเติม</small>
+        <div th:if="${Service_provider!=null}" class="c-orange f-15">
+          [[${Service_provider_phone}]]
+        </div>
+        <div th:unless="${Service_provider!=null}" class="c-orange f-15">02 582 8866</div>
+      </div>
+    </div>
+    <div class="  pt-2 float-left w-40">
+      <small class="c-grey f-9">
+        กรมธรรม์ของคุณรับประกันภัยโดยบริษัท กรุงไทยพานิชประกันภัย จำกัด (มหาชน)<br/>
+        และให้บริการโดยบริษัท รู้ใจ จำกัด และบริษัท รู้ใจ เซอร์วิส จำกัด
+      </small>
+    </div>
+    <div class=" pt-2 float-right w-60  ">
+      <table class="f-11 float-right">
+        <tr style="vertical-align: middle;">
+          <td class="border-orange-r pr-2 f-9">
+            ติดตามเราได้ที่
+          </td>
+          <td class="pl-2">
+            <img src="https://www.roojai.com/EmailTemplate/v1/common/slip/web.png" width="15"/>
+          </td>
+          <td class="pr-2">
+            roojai.com
+          </td>
+          <td>
+            <img src="https://www.roojai.com/EmailTemplate/v1/common/slip/fb.png" width="15"/>
+          </td>
+          <td class="pr-2">
+            roojai
+          </td>
+          <td>
+            <img src="https://www.roojai.com/EmailTemplate/v1/common/slip/line.png" width="15"/>
+          </td>
+          <td class="pr-2">
+            @roojai
+          </td>
+          <td>
+            <img src="https://www.roojai.com/EmailTemplate/v1/common/slip/tigtok.png" width="15"/>
+          </td>
+          <td>
+            roojai_thailand
+          </td>
+        </tr>
+      </table>
+
+    </div>
+  </div>
+
+</page>
+
+<page  size="A4" style="padding-top:10px;overflow: hidden;" >
+  <div class="bordertTop d-flex"  >
+    <div class="b-blue"></div>
+    <div class="b-orange"></div>
+  </div>
+  <!-- header str -->
+  <div class="d-flex align-items-end px-3 l-h-12">
+
+    <div class="w-70">
+      <div class="py-3 d-flex align-items-center banner-logo-container">
+        <img src="https://www.roojai.com/EmailTemplate/v1/Common/qa/roojai.png" width="60" class="mr-2" />
+        <img src="https://www.roojai.com/EmailTemplate/v1/Common/qa/kpi.png" width="54" class="mr-2"/>
+        <img th:if="${Service_provider!=null && Service_provider_imageUrl!=null}" th:src="${Service_provider_imageUrl}" class="mr-2 img-logo"/>
+      </div>
+    </div>
+    <div class="w-30 text-right">
+
+
+    </div>
+  </div>
+  <!-- header end-->
+  <div class="mainContent px-3">
+
+    <div class="box-title b-g-blue b-radiusx10-top text-center p-3">
+      <div class="icon-jojo">
+        <img src="https://www.roojai.com/EmailTemplate/v1/common/slip/roojaiIcon.png" width="60px" />
+      </div>
+      <h1 class="t-upper border-b-toppic mb-0">
+        ทำไมต้องซื้อประกันที่ รู้ใจ?
+      </h1>
+    </div>
+    <!-- review str -->
+    <div class="b-g-grey py-2 overflowHidden">
+
+      <p class="text-center f-13 mt-0 mb-05">
+        เราพร้อมมอบบริการที่ดีที่สุด
+        การันตีด้วยคะแนนรีวิวความพึงพอใจจากลูกค้าจริง
+        <!-- <img src="https://www.roojai.com/assets/images/feefo_wy.png" width="60" /> -->
+      </p>
+
+      <div class="w-80 mx-auto">
+
+        <div class="w-50 p-2 float-left box-sizing">
+          <div class="b-w b-radiusx4 box-shadow ">
+            <table class="w-100" style="border-spacing: 0px">
+              <tr>
+                <td class="b-radiusx4-left b-g-blue w-40 text-center py-2 px-1">
+
+                  <h3 class="f-40 mb-05 pb-0 l-h-12 border-b-blue ">
+                    4.9<span class="f-16 opacity-5">/5</span>
+                  </h3>
+                  <img src="https://www.roojai.com/wp-content/themes/roojai-kit-3/assets/img/webp/feefo_wy.webp" width="60" />
+                </td>
+                <td class="b-radiusx4-right text-center c-grey f-14">
+                  <span class="c-black">รีวิวลูกค้า </span><br/>
+                  <img src="https://www.roojai.com/EmailTemplate/v1/common/slip/Star-customer.png" width="100"><br>
+                  <div class="f-12">( 110,562 ความคิดเห็น )</div>
+                </td>
+
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div class="w-50 p-2 float-left box-sizing">
+          <div class="b-w b-radiusx4 box-shadow">
+            <table class="w-100" style="border-spacing: 0px;">
+              <tr>
+                <td class="b-radiusx4-left b-g-orange w-40 text-center py-2 px-1" style="height:107px">
+                  <h1 class="f-40 mb-05 pb-0 l-h-12   ">
+                    4.7<span class="f-16 opacity-5">/5</span>
+                  </h1>
+                </td>
+                <td class="b-radiusx4-right text-center c-grey f-14">
+
+
+                  <span class="c-black">รีวิวลูกค้าเคลม</span><br/>
+                  <img src="https://www.roojai.com/EmailTemplate/v1/common/slip/Star-service.png" width="100" /><br/>
+                  <div class="f-12">( 16,890 ความคิดเห็น )</div>
+
+                </td>
+
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <!-- review end -->
+    <!-- rj rewards str -->
+
+    <div class=" b-g-l-orange  overflowHidden">
+
+      <div th:if="${Service_provider_account_source!='Traditional broker'}" class="b-rj-rewards overflowHidden px-3 py-2">
+
+        <div class="w-60 float-left c-white">
+          <div class="px-3">
+                        <span class="f-20">
+                            ซื้อประกันที่รู้ใจ
+                        </span><br/>
+
+            <div class="border-white l-h-1 b-radiusx10 p-2 f-16 my-1 d-inline-block">
+              <strong>
+                รับฟรี
+              </strong>
+              <img src="https://www.roojai.com/EmailTemplate/v1/common/slip/roojaiRewards.png" width="200" />
+              <br/> สูงสุด <strong class="f-30">2,000</strong> บาท
+
+            </div>
+            <div >  ใช้แลกรับของขวัญจากแบรนด์ชั้นนำ มากมาย   </div>
+          </div>
+        </div>
+        <div class="w-40 float-right   text-right">
+          <img src="https://www.roojai.com/EmailTemplate/v1/common/slip/rw-icon.png" width="280" style="padding-top: 70px" />
+        </div>
+      </div>
+
+    </div>
+
+
+    <!--if not auto renew  end -->
+    <!-- usp str -->
+    <div class="pt-2">
+      <h2 class="text-center  border-b-toppic f-16 mt-1 l-h-12">
+        รู้ใจ ช่วยคุณ Save ค่าเบี้ยประกันสูงสุด 30% <!-- Save up to 30% -->
+        <small class="d-block f-16 f-w-normal">
+          พร้อมสิทธิประโยชน์มากมายสำหรับลูกค้า <!-- Pay less for your premium and get additional benefits - only with Roojai -->
+        </small>
+      </h2>
+      <div class="clear pt-2">
+        <div class="w-25 float-left">
+
+          <div class="d-inline-block float-left mx-1 pr-1">
+            <img src="https://www.roojai.com/EmailTemplate/v1/common/slip/camera.png"  width="38" />
+          </div>
+          <div class="w-70 float-left">
+
+            <div class="c-l-blue f-11 f-w-bolder">
+              ลดเบี้ย 10%
+              <!-- 10% dashcam discount -->
+            </div>
+            <p class="f-9 my-0">
+              รับส่วนลดค่าเบี้ยประกัน 10% เมื่อติดกล้องหน้ารถ
+              <!-- If you have a dashcam installed in your car. -->
+            </p>
+          </div>
+
+        </div>
+        <div class="w-25 float-left">
+
+          <div class="d-inline-block float-left mx-1 pr-1">
+            <img src="https://www.roojai.com/EmailTemplate/v1/common/slip/garage.png"  width="38" />
+          </div>
+          <div class="w-70 float-left">
+
+            <div class="c-l-blue f-11  l-h-11 mb-1 f-w-bolder">
+              อู่และศูนย์ซ่อมในเครือ
+              กว่า 1,800 แห่ง
+            </div>
+            <p class="my-0 f-9">
+
+              เลือกซ่อมรถกับศูนย์ซ่อมในเครือ
+              กว่า 1,800 แห่ง / อู่ซ่อมในเครือ
+              กว่า 600 แห่งทั่วประเทศ
+
+            </p>
+            <p/>
+          </div>
+
+        </div>
+        <div class="w-25 float-left">
+
+          <div class="d-inline-block float-left mx-1 pr-1">
+            <img src="https://www.roojai.com/EmailTemplate/v1/common/slip/10-inslments.png"  width="38" />
+          </div>
+          <div class="w-70 float-left f-11">
+
+            <div class="c-l-blue f-w-bolder">
+              ผ่อนสบาย 10 เดือน
+              <!-- 10 instalments -->
+            </div>
+            <p class=" my-0 f-9">
+              ผ่อนค่าเบี้ยประกันสะดวกไม่บล็อก
+              วงเงินบัตร ได้ทั้งบัตรเครดิต
+              บัตรเดบิต และพร้อมเพย์
+              <!-- Pay by instalments by debit / credit card and promtpay without blocking your credit limit. -->
+            </p>
+          </div>
+
+        </div>
+        <div class="w-25 float-left">
+
+          <div class="d-inline-block float-left mx-1 pr-1">
+            <img src="https://www.roojai.com/EmailTemplate/v1/common/slip/car-inspection.png"  width="38" />
+          </div>
+          <div class="w-70 float-left ">
+
+            <div class="c-l-blue f-11  l-h-11 mb-1 f-w-bolder">
+              ตรวจสภาพรถออนไลน์
+              ผ่านแอปรู้ใจ
+              <!-- Car inspection via Roojai mobile app -->
+            </div>
+            <p class=" my-0 f-9">
+              วิดีโอคอลตรวจสภาพรถผ่าน
+              Roojai Mobile App สะดวกกว่า
+              ใช้เวลาเพียงไม่กี่นาที
+              <!-- Video car inspection via app. Done in a few minutes and saves you time. -->
+            </p>
+          </div>
+
+        </div>
+      </div>
+      <div class="clear">
+        <div class="w-25 float-left">
+
+          <div class="d-inline-block float-left mx-1 pr-1">
+            <img src="https://www.roojai.com/EmailTemplate/v1/common/slip/claim-online.png"  width="38"/>
+          </div>
+          <div class="w-70 float-left">
+
+            <div class="c-l-blue f-11 l-h-11 mb-1 f-w-bolder">
+              แจ้งเคลมออนไลน์สะดวก
+              ผ่านแอปรู้ใจ
+              <!-- Claim online via Roojai mobile app -->
+            </div>
+            <p class="f-9 my-0">
+              วิดีโอคอลแจ้งเคลมผ่านแอปเพื่อ
+              ขอรับความช่วยเหลือ แชร์ตำแหน่งที่
+              เกิดเหตุ และติดตามพิกัดเจ้าหน้าที่
+              ได้ทันที
+              <!-- Claim via video, get instant help and we will immediately send help your way via GPS. -->
+            </p>
+          </div>
+
+        </div>
+        <div class="w-25 float-left">
+
+          <div class="d-inline-block float-left mx-1 pr-1">
+            <img src="https://www.roojai.com/EmailTemplate/v1/common/slip/30min.png"  width="38" />
+          </div>
+          <div class="w-70 float-left">
+
+            <div class="c-l-blue f-11  l-h-11 mb-1 f-w-bolder">
+              การันตีถึงจุดเกิดเหตุ
+              ใน 30 นาที
+              <!-- 30-min to accident scene -->
+            </div>
+            <p class="f-11 my-0 f-9">
+              เมื่อเกิดอุบัติเหตุหรือรถเสีย
+              เจ้าหน้าที่ของเราจะเดินทางไปช่วย
+              เหลือคุณใน 30 นาที
+              <!-- We guarantee to get you help at the accident scene within 30 minutes. -->
+            </p>
+          </div>
+
+        </div>
+        <div class="w-25 float-left">
+
+          <div class="d-inline-block float-left mx-1 pr-1">
+            <img src="https://www.roojai.com/EmailTemplate/v1/common/slip/12-months-repair.png"  width="38" />
+          </div>
+          <div class="w-70 float-left f-11">
+
+            <div class="c-l-blue f-11  l-h-11 mb-1 f-w-bolder">
+              รับประกันคุณภาพ
+              งานซ่อมรถ 12 เดือน
+              <!-- 12-month repair warranty -->
+            </div>
+            <p class=" my-0 f-9">
+              หากคุณเลือกแผนการซ่อมรถที่อู่ใน
+              เครือของเราที่ได้การรับรอง
+              มาตรฐานกว่า 600 แห่งทั่วประเทศ
+              เรารับประกันคุณภาพงานซ่อมรถให้
+              คุณถึง 12 เดือน
+              <!-- If you repair your vehicle in one of 600 preferred garages, we guarantee the quality repairs <br/>for 12 months. -->
+            </p>
+            <p/>
+          </div>
+
+        </div>
+        <div class="w-25 float-left">
+
+          <div class="d-inline-block float-left mx-1 pr-1">
+            <img src="https://www.roojai.com/EmailTemplate/v1/common/slip/100permoney.png"  width="38" />
+          </div>
+          <div class="w-70 float-left ">
+
+            <div class="c-l-blue f-11  l-h-11 mb-1 f-w-bolder">
+              การันตีคืนเงืน 100%
+              <!-- 100% money back guarantee -->
+            </div>
+            <p class=" my-0 f-9">
+              หากคุณได้รับข้อเสนอและราคาที่ดี
+              กว่าภายใต้ความคุ้มครองข้อกำหนด
+              และเงื่อนไขเดียวกัน คุณสามารถขอ
+              ยกเลิกกรมธรรม์ได้ โดยรู้ใจยินดีคืน
+              เงิน 100%
+              <!-- If you find a better price with the same coverage and terms and conditions,
+              you are entitled to cancel and receive a full refund on your policy. -->
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div class="clear">
+
+    </div>
+    <!-- usp end -->
+    <!-- rsa str -->
+    <div class="b-g-grey mt-0 pb-2 overflowHidden">
+      <h2 class="text-center border-b-toppic f-16">
+        อุ่นใจกว่า กับบริการเสริมที่ รู้ใจ ช่วย Save คุณจากทุกสถานการณ์
+        <!-- Be worry free from unexpected events with Roojai add-on services -->
+      </h2>
+      <div class="w-90 mx-auto mt-3 pt-1">
+
+
+        <div class="w-50 float-left">
+
+          <div class="d-inline-block float-left mx-1 pr-1">
+            <img src="https://www.roojai.com/EmailTemplate/v1/common/slip/24hroadside.png"  width="38" />
+          </div>
+          <div class="w-70 float-left ">
+
+            <div class="c-l-blue f-w-bolder">
+              บริการช่วยเหลือฉุกเฉินบนท้องถนน 24 ชม.
+              <!-- 24-hour Roadside Assistance -->
+            </div>
+            <p class=" my-0 f-10">
+              เลือกรับบริการพิเศษนี้เพิ่มได้ เพื่อดูแลช่วยเหลือคุณยาม
+              ฉุกเฉิน เช่น บริการรถยก น้ำมันหมด แบตเตอรี่มีปัญหา
+              ลืมกุญแจ ให้การเดินทางของคุณราบรื่นและปลอดภัยทุก
+              เส้นทาง
+              <!-- Pay a little extra, and we'll be there in the event of a vehicle breakdown. -->
+            </p>
+          </div>
+
+        </div>
+        <div class="w-50 float-left">
+
+          <div class="d-inline-block float-left mx-1 pr-1">
+            <img src="https://www.roojai.com/EmailTemplate/v1/common/slip/carrent.png"  width="38" />
+          </div>
+          <div class="w-70 float-left ">
+
+            <div class="c-l-blue f-w-bolder">
+              บริการรถทดแทนระหว่างซ่อม
+              <!-- Car Replacement -->
+            </div>
+            <p class=" my-0 f-10">
+              เลือกบริการเสริมนี้ได้ เพิ่มความสะดวกสบายในราคาที่
+              ประหยัด เมื่อคุณต้องการใช้รถทดแทนระหว่างซ่อม
+              <!-- Affordable and convenient car
+              replacement service when your car
+              is being repaired help a claim. -->
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <!-- rsa end -->
+  </div>
+  <div class="text-center c-grey f-9 pt-2">
+    *เงื่อนไขสิทธิพิเศษและบริการเสริมของรู้ใจเป็นไปตามที่บริษัทกำหนด กรุณาศึกษาโดยละเอียดก่อนทำการซื้อกรมธรรม์
+    <!-- *Roojai additional benefits and add-on services conditions apply. Please carefully read the terms and conditions and study policy coverage. -->
+
+  </div>
+  <div class="clear"></div>
+
+  <!-- footer str -->
+  <div class="footer px-2 pt-0 w-100 p-absolute"  >
+
+    <div class=" w-60 float-left">
+      <div class="footer-sologan">
+        รู้ใจ ประกันออนไลน์
+        <!-- Roojai Online Insurance -->
+        <div class="c-orange">
+          รู้ใจกว่า ประหยัดกว่า
+          <!-- Expect more, save more -->
+        </div>
+      </div>
+    </div>
+    <div class=" float-right w-40">
+
+
+      <div class="  float-right l-h-13">
+        <small class="c-blue f-11 ">
+          สอบถามเพิ่มเติม
+          <!-- English contact centre -->
+        </small>
+        <div class="c-orange f-15" th:if="${Service_provider_id==null}">02 582 8888</div>
+        <div class="c-orange f-15" th:if="${Service_provider_id!=null}">[[${Service_provider_phone}]]</div>
+      </div>
+    </div>
+    <div class="  pt-2 float-left w-40">
+      <small class="c-grey f-9">
+        กรมธรรม์ของคุณรับประกันภัยโดยบริษัท กรุงไทยพานิชประกันภัย จำกัด (มหาชน)<br/>
+        และให้บริการโดยบริษัท รู้ใจ จำกัด และบริษัท รู้ใจ เซอร์วิส จำกัด
+        <!-- Your policy is underwritten by Krunghtai Panich Insurance<br/>and serviced by Roojai and Roojai Services -->
+      </small>
+    </div>
+    <div class=" pt-2 float-right w-60  ">
+      <table class="f-11 float-right">
+        <tr style="vertical-align: middle;">
+          <td class="border-orange-r pr-2 f-9">
+            ติดตามเราได้ที่
+            <!-- FOLLOW US -->
+          </td>
+          <td class="pl-2">
+            <img src="https://www.roojai.com/EmailTemplate/v1/common/slip/web.png" width="15"/>
+          </td>
+          <td class="pr-2">
+            roojai.com
+          </td>
+          <td>
+            <img src="https://www.roojai.com/EmailTemplate/v1/common/slip/fb.png" width="15"/>
+          </td>
+          <td class="pr-2">
+            roojai
+          </td>
+          <td>
+            <img src="https://www.roojai.com/EmailTemplate/v1/common/slip/line.png" width="15"/>
+          </td>
+          <td class="pr-2">
+            @roojai
+          </td>
+          <td>
+            <img src="https://www.roojai.com/EmailTemplate/v1/common/slip/tigtok.png" width="15"/>
+          </td>
+          <td>
+            roojai_thailand
+          </td>
+        </tr>
+      </table>
+
+    </div>
+  </div>
+  <!-- footer end -->
+
+</page>
+
+
+
+</body>
+</html>

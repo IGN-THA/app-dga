@@ -1,0 +1,7 @@
+package com.docprocess.service;
+
+import java.io.IOException;
+
+public interface ApiSigningService {
+    byte[] signDocument(byte[] input, String documentSfid) throws IOException;
+}

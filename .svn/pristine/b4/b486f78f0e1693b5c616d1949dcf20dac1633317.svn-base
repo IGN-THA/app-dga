@@ -1,0 +1,38 @@
+package com.docprocess.component;
+
+import org.springframework.stereotype.Component;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.chrono.ChronoLocalDate;
+import java.time.chrono.ThaiBuddhistChronology;
+import java.time.chrono.ThaiBuddhistDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
+
+@Component
+public class DateFormatter {
+    public String format(OffsetDateTime dateTime, Locale locale) {
+        return format(dateTime.toLocalDate(), locale);
+    }
+    public String format(String dob, Locale locale){
+        /*DateTimeFormatter mainFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        if(locale.getLanguage().equalsIgnoreCase("en") || locale.getLanguage().equalsIgnoreCase("zh")) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy").withChronology(ThaiBuddhistChronology.INSTANCE);
+            ChronoLocalDate thaiDate = ChronoLocalDate.from(LocalDate.parse(dob, formatter));
+            return mainFormatter.format(thaiDate);
+        }else*/{
+            return dob;
+        }
+    }
+    public String format(LocalDate dateTime, Locale locale) {
+        if (locale.getLanguage().equalsIgnoreCase("en")) {
+            return dateTime.format(DateTimeFormatter.ofPattern("dd MMM yyyy", Locale.ENGLISH));
+        } else if (locale.getLanguage().equalsIgnoreCase("th")) {
+            return ThaiBuddhistDate.from(dateTime).format(DateTimeFormatter.ofPattern("dd MMM yyyy").withLocale(new Locale("th")));
+        } else {
+            return dateTime.format(DateTimeFormatter.ofPattern("dd'th' MMMM yyyy", Locale.CHINESE));
+        }
+    }
+}
