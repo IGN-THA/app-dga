@@ -49,6 +49,9 @@ public class InitializeApplicationConfig implements CommandLineRunner {
     @Value("${fmsapp.env}")
     private String currentEnv;
 
+    @Value("${spring.job.start}")
+    private Boolean isDocGenBatch;
+
     @Override
     public void run(String... args) throws Exception {
         DigiSignDocManager docMgr = new DigiSignDocManager(true);
@@ -57,7 +60,7 @@ public class InitializeApplicationConfig implements CommandLineRunner {
         //List<SignatureCardData> signatureCardDataList = signatureCardDataRepository.findAll();
         List<SignatureCardData> signatureCardDataList = signatureCardDataRepository.findByFlagSigningUsingAPI(false);
         for (SignatureCardData cardData : signatureCardDataList) {
-            if(currentEnv.equalsIgnoreCase("PROD"))
+            if(currentEnv.equalsIgnoreCase("PROD") && isDocGenBatch)
                 cardData.setFlagActive(false);
         }
         signatureCardDataRepository.saveAll(signatureCardDataList);
