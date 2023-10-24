@@ -14,6 +14,8 @@ import com.docprocess.repository.DocumentTypeDataRepository;
 import com.docprocess.repository.SignatureCardDataRepository;
 import com.docprocess.repository.SystemConfigRepository;
 import com.docprocess.service.ApiSigningService;
+import com.docprocess.service.CloudSigningService;
+import com.docprocess.service.impl.CloudSigningServiceImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.poi.util.IOUtils;
@@ -186,11 +188,27 @@ public class ManageDocumentGeneratedJob extends QuartzJobBean {
                                         byte[] signedPdfData = apiSigningService.signDocument(IOUtils.toByteArray(pdfInputStream), recordId, sessionFactory, signCardDataObj);
                                         s3Mgr.uploadContent(bucketName, s3UploadName, signedPdfData, (long) signedPdfData.length);
                                     } else {
-                                        docManager.signDocument(signCardDataObj.getSignatureCardKey(), signCardDataObj.getSignatureCardSlot(), signCardDataObj.getSignatureCardPassword(), pdfInputStream, tempFilePath + "\\Signed_" + fileName, null);
-                                        signedFile = new File(tempFilePath + "\\Signed_" + fileName);
-                                        fis = new FileInputStream(signedFile);
-                                        s3UploadName = validateFolder + fileUploadName;
-                                        s3Mgr.uploadContent(bucketName, s3UploadName, fis, signedFile.length());
+//                                        docManager.signDocument(signCardDataObj.getSignatureCardKey(), signCardDataObj.getSignatureCardSlot(), signCardDataObj.getSignatureCardPassword(), pdfInputStream, tempFilePath + "\\Signed_" + fileName, null);
+//                                        signedFile = new File(tempFilePath + "\\Signed_" + fileName);
+//                                        fis = new FileInputStream(signedFile);
+//                                        s3UploadName = validateFolder + fileUploadName;
+//                                        s3Mgr.uploadContent(bucketName, s3UploadName, fis, signedFile.length());
+                                        if(!signCardDataObj.getFlagSoftToken()){
+                                            //Hard token
+                                            docManager.signDocument(signCardDataObj.getSignatureCardKey(), signCardDataObj.getSignatureCardSlot(), signCardDataObj.getSignatureCardPassword(), pdfInputStream, tempFilePath + "\\Signed_" + fileName, null);
+                                            signedFile = new File(tempFilePath + "\\Signed_" + fileName);
+                                            fis = new FileInputStream(signedFile);
+                                            s3UploadName = validateFolder + fileUploadName;
+                                            s3Mgr.uploadContent(bucketName, s3UploadName, fis, signedFile.length());
+                                        }else {
+                                            //Soft token
+                                            CloudSigningService cloudSigningService = new CloudSigningServiceImpl("esign-roojai-insurance");
+                                            cloudSigningService.getCertValue(pdfInputStream,tempFilePath + "\\Signed_" + fileName,null);
+                                            signedFile = new File(tempFilePath + "\\Signed_" + fileName);
+                                            fis = new FileInputStream(signedFile);
+                                            s3UploadName = validateFolder + fileUploadName;
+                                            s3Mgr.uploadContent(bucketName, s3UploadName, fis, signedFile.length());
+                                        }
                                     }
                                     docDataObj.setFlagDocumentSigned(true);
                                     docDataObj.setDocumentSignedDate(currentTime);
@@ -254,7 +272,7 @@ public class ManageDocumentGeneratedJob extends QuartzJobBean {
 
                 if (!documentTypeData.getForValidation() && docDataObj.getFlagPrintingRequired() && docDataObj.getDocPrintingDate() == null) {
                     FileInputStream printFolder = new FileInputStream(fileObj);
-                    s3UploadName = validateFolder + "Printing/" + docDataObj.getDocumentName() + ".pdf";
+                    s3UploadName = validateFolder + "Printing/" + docDataObj.getReferenceNumber() + "_" + docDataObj.getDocumentName() + ".pdf";
                     //System.out.println("Printing "+s3UploadName);
                     s3Mgr.uploadContent(homeBucketName, s3UploadName, printFolder, fileObj.length());
                     docDataObj.setDocPrintingDate(currentTime);
