@@ -254,7 +254,7 @@ public class ManageDocumentGeneratedJob extends QuartzJobBean {
 
                 if (!documentTypeData.getForValidation() && docDataObj.getFlagPrintingRequired() && docDataObj.getDocPrintingDate() == null) {
                     FileInputStream printFolder = new FileInputStream(fileObj);
-                    s3UploadName = validateFolder + "Printing/" + docDataObj.getDocumentName() + ".pdf";
+                    s3UploadName = validateFolder + "Printing/" + docDataObj.getReferenceNumber() + "_" + docDataObj.getDocumentName() + ".pdf";
                     //System.out.println("Printing "+s3UploadName);
                     s3Mgr.uploadContent(homeBucketName, s3UploadName, printFolder, fileObj.length());
                     docDataObj.setDocPrintingDate(currentTime);
