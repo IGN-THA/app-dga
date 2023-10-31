@@ -14,29 +14,35 @@ import com.docprocess.pojo.Accessory;
 import com.docprocess.pojo.PdfGenerationQueueResponse;
 import com.docprocess.pojo.PdfGenerationRequest;
 import com.docprocess.repository.*;
+import com.docprocess.service.CloudSigningService;
 import com.docprocess.service.PdfGenerationService;
 import com.docprocess.service.TemplateService;
+import com.docprocess.service.impl.CloudSigningServiceImpl;
 import com.google.common.net.HttpHeaders;
 import io.reactivex.rxjava3.core.Single;
 import org.apache.http.HttpStatus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.util.Supplier;
+import org.codehaus.jettison.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.security.PermitAll;
 import javax.persistence.EntityManagerFactory;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
+import java.io.*;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.Date;
 
 @RestController
 @RequestMapping("/api/v1/doc")
@@ -241,6 +247,47 @@ public class DocumentController {
                 .doOnSuccess(renderedFile -> response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + renderedFile.getName() + "\""))
                 .map(FileSystemResource::new)
                 .blockingGet();
+    }
+
+    //For test sign certificate from az key vault
+    @GetMapping("/signCert")
+    @ResponseBody
+    public String CloudSigningService() throws JSONException, IOException, DocumentRenderException {
+        return getCertValue();
+    }
+    private String getCertValue() throws IOException, JSONException, DocumentRenderException {
+        String currentPath = System.getProperty("user.dir");
+        String fileName = "Voluntary Policy Schedule 02 1000-02540386-01-000.pdf";
+        String tempFilePath = "\\DocGenFile\\RenderedFilePath\\";
+        FileInputStream pdfInputStream = new FileInputStream(currentPath + "\\DocGenFile\\RenderedFilePath\\"+fileName);
+        CloudSigningService cloudSigningService = new CloudSigningServiceImpl("esign-roojai-insurance");
+        cloudSigningService.getCertValue(pdfInputStream,currentPath + tempFilePath + "\\Signed_" + fileName,null);
+        return "Signed";
+    }
+
+    @PostMapping("/signCertWithFile")
+    @ResponseBody
+    public FileSystemResource CloudSigningService2(@RequestBody(required = true) MultipartFile file) throws IOException, JSONException, DocumentRenderException {
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String currentPath = System.getProperty("user.dir");
+        String tempFilePath = "\\DocGenFile\\RenderedFilePath\\";
+
+        InputStream inputStream = file.getInputStream();
+        byte[] buffer = new byte[inputStream.available()];
+        inputStream.read(buffer);
+
+        String fileName = timeStamp + file.getOriginalFilename();
+//        File directory = new File(tempFilePath);
+        File newFile = new File(currentPath+tempFilePath + fileName);
+        try (OutputStream outStream = new FileOutputStream(newFile)) {
+            outStream.write(buffer);
+        }
+        FileInputStream pdfInputStream = new FileInputStream(currentPath + "\\DocGenFile\\RenderedFilePath\\"+fileName);
+        CloudSigningService cloudSigningService = new CloudSigningServiceImpl("esign-roojai-insurance");
+        cloudSigningService.getCertValue(pdfInputStream,currentPath + tempFilePath + "\\Signed_" + fileName,null);
+
+        File signedFile = new File(currentPath + tempFilePath + "\\Signed_" + fileName);
+        return new FileSystemResource(signedFile);
     }
 
 }

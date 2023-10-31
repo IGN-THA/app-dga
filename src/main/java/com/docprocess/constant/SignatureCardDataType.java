@@ -11,7 +11,8 @@ public enum SignatureCardDataType {
     KPI_ID_01("KPI_IT_01"),
     ROOJAI_SERVICE("Roojai Service"),
     ROOJAI_TOKEN_1("Roojai Token 1"),
-    AXA("AXAPA");
+    AXA("AXAPA"),
+    RJI("Roojai Insurance");
 
     private String name;
 

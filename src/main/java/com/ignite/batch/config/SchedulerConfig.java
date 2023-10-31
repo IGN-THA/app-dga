@@ -30,27 +30,27 @@ public class SchedulerConfig {
     /**
      * create scheduler factory
      */
-    @Bean
-    public SchedulerFactoryBean schedulerFactoryBean() {
-
-        SchedulerJobFactory jobFactory = new SchedulerJobFactory();
-        jobFactory.setApplicationContext(applicationContext);
-
-        Properties properties = new Properties();
-        properties.putAll(quartzProperties.getProperties());
-
-        SchedulerFactoryBean factory = new SchedulerFactoryBean();
-        boolean isJob = false;
-        String jobStart = env.getProperty("spring.job.start");
-        if(jobStart != null && !jobStart.isEmpty()){
-            isJob = Boolean.parseBoolean(env.getProperty("spring.job.start"));
-        }
-        factory.setAutoStartup(isJob); // autostart up false
-        factory.setOverwriteExistingJobs(true);
-        factory.setDataSource(dataSource);
-        factory.setQuartzProperties(properties);
-        factory.setJobFactory(jobFactory);
-        return factory;
-    }
+//    @Bean
+//    public SchedulerFactoryBean schedulerFactoryBean() {
+//
+//        SchedulerJobFactory jobFactory = new SchedulerJobFactory();
+//        jobFactory.setApplicationContext(applicationContext);
+//
+//        Properties properties = new Properties();
+//        properties.putAll(quartzProperties.getProperties());
+//
+//        SchedulerFactoryBean factory = new SchedulerFactoryBean();
+//        boolean isJob = false;
+//        String jobStart = env.getProperty("spring.job.start");
+//        if(jobStart != null && !jobStart.isEmpty()){
+//            isJob = Boolean.parseBoolean(env.getProperty("spring.job.start"));
+//        }
+//        factory.setAutoStartup(isJob); // autostart up false
+//        factory.setOverwriteExistingJobs(true);
+//        factory.setDataSource(dataSource);
+//        factory.setQuartzProperties(properties);
+//        factory.setJobFactory(jobFactory);
+//        return factory;
+//    }
 
 }

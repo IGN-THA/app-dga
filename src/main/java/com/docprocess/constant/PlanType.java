@@ -37,7 +37,7 @@ public enum PlanType {
     private final boolean flood;
     private final boolean towing;
 
-    @JsonCreator
+    @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
     public static PlanType fromValue(String value) {
         for (PlanType it : values()) {
             if (it.getValue().contains(value.trim())) {

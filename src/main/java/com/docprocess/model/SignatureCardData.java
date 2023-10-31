@@ -74,4 +74,7 @@ public class SignatureCardData implements Serializable {
     @Column(name = "api_request_info")
     @Type(type = "jsonb")
     private Map<String, Object> apiRequestInfo;
+
+    @Column(name = "flag_soft_token")
+    private Boolean flagSoftToken = false;
 }
