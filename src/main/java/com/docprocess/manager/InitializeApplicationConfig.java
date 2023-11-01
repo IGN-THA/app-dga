@@ -58,7 +58,7 @@ public class InitializeApplicationConfig implements CommandLineRunner {
         HashMap<String, Long> mapKeySlot = DigiSignDocManager.mapKeySlot;
 
         //List<SignatureCardData> signatureCardDataList = signatureCardDataRepository.findAll();
-        List<SignatureCardData> signatureCardDataList = signatureCardDataRepository.findByFlagSigningUsingAPI(false);
+        List<SignatureCardData> signatureCardDataList = signatureCardDataRepository.findByFlagSigningUsingAPIAndFlagSoftToken(false, false);
         for (SignatureCardData cardData : signatureCardDataList) {
             if(currentEnv.equalsIgnoreCase("PROD") && isDocGenBatch)
                 cardData.setFlagActive(false);

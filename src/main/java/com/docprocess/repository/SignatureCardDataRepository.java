@@ -17,5 +17,5 @@ public interface SignatureCardDataRepository extends JpaRepository<SignatureCard
 
     List<SignatureCardData> findAll();
 
-    List<SignatureCardData> findByFlagSigningUsingAPI(Boolean isFlagSigning);
+    List<SignatureCardData> findByFlagSigningUsingAPIAndFlagSoftToken(Boolean isFlagSigning, Boolean flagSoftToken);
 }
