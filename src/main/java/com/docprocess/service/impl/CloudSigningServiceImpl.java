@@ -13,6 +13,8 @@ import com.itextpdf.signatures.*;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.pdf.PdfCopy;
 import com.itextpdf.text.pdf.PdfSmartCopy;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import java.io.*;
 import java.security.KeyStore;
@@ -28,6 +30,8 @@ public class CloudSigningServiceImpl implements CloudSigningService {
     public static final String KEYVAULTNAME = "roojai-az-keyvault";
     public static final String KEYVAULTURI = "https://" + KEYVAULTNAME + ".vault.azure.net";
     private final String certificateName;
+
+    Logger LOG = LogManager.getLogger(CloudSigningServiceImpl.class);
     public CloudSigningServiceImpl(String certificateName) {
         this.certificateName = certificateName;
     }
@@ -59,15 +63,15 @@ public class CloudSigningServiceImpl implements CloudSigningService {
         BouncyCastleProvider providerBC = new BouncyCastleProvider();
         Security.addProvider(providerBC);
         try {
-            System.out.println("Retrive Certificate....");
+            LOG.info("Retrive Certificate....");
             KeyVaultCertificateWithPolicy certificateWithPolicy = createClient().getCertificate(certificateName);
             byte[] byteCertificate = certificateWithPolicy.getCer();
             InputStream inputStreamCert = new ByteArrayInputStream(byteCertificate);
             CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
             Certificate[] chain = new Certificate[1];
             chain[0] = certificateFactory.generateCertificate(inputStreamCert);
-            System.out.println("Certificate Complete");
-            System.out.println("Retrive Secret....");
+            LOG.info("Certificate Complete" + chain[0]);
+            LOG.info("Retrive Secret....");
             String downloadedPK = GetSecret(certificateWithPolicy);
             byte[] privateKeyBytes = Base64.getDecoder().decode(downloadedPK);
             InputStream bais = new ByteArrayInputStream(privateKeyBytes);
@@ -76,17 +80,17 @@ public class CloudSigningServiceImpl implements CloudSigningService {
             char[] pass = "".toCharArray();
             String alias = keyStore.aliases().nextElement();
             PrivateKey privateKey = (PrivateKey) keyStore.getKey(alias,pass);
-            System.out.println("Secret Complete");
+            LOG.info("Secret Complete" + privateKey);
             SignDoc(chain,privateKey,srcStream,fileName);
-            System.out.println("Sign Complete");
+            LOG.info("Sign Complete");
             return "Sign Complete";
         } catch (Exception e) {
-            System.out.printf(e.getMessage());
+            LOG.error(e.getMessage());
             return "error";
         }
     }
     public OutputStream SignDoc(Certificate[] chain,PrivateKey privateKey, InputStream srcStream,String fileName ) throws Exception{
-        System.out.println("Start Sign Document...");
+        LOG.info("Start Sign Document...");
         BouncyCastleProvider providerBC = new BouncyCastleProvider();
         Security.addProvider(providerBC);
         List<ICrlClient> crlList = new ArrayList<>();
