@@ -70,7 +70,7 @@ public class CloudSigningServiceImpl implements CloudSigningService {
             CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
             Certificate[] chain = new Certificate[1];
             chain[0] = certificateFactory.generateCertificate(inputStreamCert);
-            LOG.info("Certificate Complete" + chain[0]);
+            LOG.info("Certificate Complete");
             LOG.info("Retrive Secret....");
             String downloadedPK = GetSecret(certificateWithPolicy);
             byte[] privateKeyBytes = Base64.getDecoder().decode(downloadedPK);
@@ -80,7 +80,7 @@ public class CloudSigningServiceImpl implements CloudSigningService {
             char[] pass = "".toCharArray();
             String alias = keyStore.aliases().nextElement();
             PrivateKey privateKey = (PrivateKey) keyStore.getKey(alias,pass);
-            LOG.info("Secret Complete" + privateKey);
+            LOG.info("Secret Complete");
             SignDoc(chain,privateKey,srcStream,fileName);
             LOG.info("Sign Complete");
             return "Sign Complete";
