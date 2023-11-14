@@ -426,6 +426,8 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
         // templateDetail.setVariable("Car_Replacement_price", setStringVariable(ctx.getQuote().getCarReplacementPrice()));
         templateDetail.setVariable("Car_Replacement_price", setDoubleVariable(ctx.getQuote().getCarReplacementPrice()));
 
+        templateDetail.setVariable("Policy_Insurer", ctx.getQuote().getPolicyInsurer());
+        
         /** Total addon price **/ // Double addOnPrice = ctx.getQuote().getAddOnPrice();
         // templateDetail.setVariable("Add_on_price", addOnPrice!=null ? addOnPrice : "0");
         templateDetail.setVariable("Add_on_price", setDoubleVariable(ctx.getQuote().getAddOnPrice()).toString());

@@ -317,4 +317,7 @@ public class Quote {
     private String quoteId;
     @JsonProperty("premiumByPmntFrequency")
     private double premiumByPmntFrequency;
+
+    @JsonProperty("Policy_Insurer")
+    private String PolicyInsurer;
 }
