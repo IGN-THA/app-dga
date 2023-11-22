@@ -146,7 +146,12 @@ public class ApiSigningServiceImpl implements ApiSigningService {
         HttpEntity<String> requestEntity = new HttpEntity<>(apiRequest.toString(), headers);
 
         try {
-            return handleResponseSignDoc(restTemplate, requestEntity).map(DocumentSignResponse::getFile).orElse(null);
+            DocumentSignResponse documentSignResponse = handleResponseSignDoc(restTemplate, requestEntity);
+            if(documentSignResponse != null){
+                logger.info("Success sign document for Api Signing: " + documentSignResponse.getSizeByte());
+                return documentSignResponse.getFile();
+            }
+            return null;
         } catch (HttpClientErrorException ex) {
             // If access token is expired, retry 1 more time with new access token
             if (ex.getStatusCode() == HttpStatus.UNAUTHORIZED) {
@@ -154,7 +159,12 @@ public class ApiSigningServiceImpl implements ApiSigningService {
                 authorizationHeader = MessageFormat.format("{0} {1}", cache.get(CACHE_ACCESS_TOKEN_TYPE), accessToken);
                 headers.set(AUTHORIZATION_HEADER, authorizationHeader);
                 requestEntity = new HttpEntity<>(apiRequest.toString(), headers);
-                return handleResponseSignDoc(restTemplate, requestEntity).map(DocumentSignResponse::getFile).orElse(null);
+                DocumentSignResponse documentSignResponse = handleResponseSignDoc(restTemplate, requestEntity);
+                if(documentSignResponse != null){
+                    logger.info("[Retry] Success sign document for Api Signing: " + documentSignResponse.getSizeByte());
+                    return documentSignResponse.getFile();
+                }
+                return null;
             }
 
             String errorMessage = ErrorConfig.getErrorMessages(this.getClass().getName(), "signDocument", ex);
@@ -162,18 +172,19 @@ public class ApiSigningServiceImpl implements ApiSigningService {
         }
     }
 
-    private Optional<DocumentSignResponse> handleResponseSignDoc(RestTemplate rest, HttpEntity<String> requestEntity) throws JsonProcessingException {
-        return Optional.ofNullable(rest.postForObject(documentEndpoint, requestEntity, String.class))
-                .map(StringEscapeUtils::unescapeJson)
-                .map(it -> it.substring(1, it.length() - 1))
-                .map(it -> {
-                    ObjectMapper objectMapper = new ObjectMapper();
-                    try {
-                        return objectMapper.readValue(it, DocumentSignResponse.class);
-                    } catch (JsonProcessingException e) {
-                        return null;
-                    }
-                });
+    private DocumentSignResponse handleResponseSignDoc(RestTemplate rest, HttpEntity<String> requestEntity) throws JsonProcessingException {
+//        return Optional.ofNullable(rest.postForObject(documentEndpoint, requestEntity, String.class))
+//                .map(StringEscapeUtils::unescapeJson)
+//                .map(it -> it.substring(1, it.length() - 1))
+//                .map(it -> {
+//                    ObjectMapper objectMapper = new ObjectMapper();
+//                    try {
+//                        return objectMapper.readValue(it, DocumentSignResponse.class);
+//                    } catch (JsonProcessingException e) {
+//                        return null;
+//                    }
+//                });
+        return rest.postForObject(documentEndpoint, requestEntity, DocumentSignResponse.class);
     }
 
     private Optional<String> getCacheAccessToken() {
