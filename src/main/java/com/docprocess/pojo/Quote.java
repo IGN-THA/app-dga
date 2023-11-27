@@ -318,6 +318,6 @@ public class Quote {
     @JsonProperty("premiumByPmntFrequency")
     private double premiumByPmntFrequency;
 
-    @JsonProperty("Policy_Insurer")
+    @JsonProperty("policyInsurer")
     private String PolicyInsurer;
 }
