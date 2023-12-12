@@ -60,6 +60,8 @@ public class ManageDocumentGeneratedJob extends QuartzJobBean {
     @Autowired
     private EntityManagerFactory sessionFactory;
 
+    String pdfPasswordOwner;
+
     Logger logger = LogManager.getLogger(ManageDocumentGeneratedJob.class);
 
     @Override
@@ -76,7 +78,7 @@ public class ManageDocumentGeneratedJob extends QuartzJobBean {
         String secretKey = systemConfigRepository.findByConfigKey(ConfigConstant.AWS_SECRET_KEY).getConfigValue();
         String bucketName = systemConfigRepository.findByConfigKey(ConfigConstant.AWS_S3_DOCUMENT_BUCKET_NAME).getConfigValue();
         String homeBucketName = systemConfigRepository.findByConfigKey(ConfigConstant.AWS_S3_HOME_BUCKET_NAME).getConfigValue();
-        String pdfPasswordOwner = systemConfigRepository.findByConfigKey(ConfigConstant.PDF_PASSWORD_OWNER).getConfigValue();
+        pdfPasswordOwner = systemConfigRepository.findByConfigKey(ConfigConstant.PDF_PASSWORD_OWNER).getConfigValue();
 
         String s3Region = systemConfigRepository.findByConfigKey(ConfigConstant.AWS_REGION).getConfigValue();
         S3BucketManager s3Mgr = new S3BucketManager(accessKey, secretKey, s3Region);
@@ -146,9 +148,17 @@ public class ManageDocumentGeneratedJob extends QuartzJobBean {
                         //docManager.passwordProtectDocument(inputPassProtect, docDataObj.getPdfPassword().getBytes(), pdfPasswordOwner.getBytes(), tempFilePath + "\\" + fileName);
                         //File fObj = new File(tempFilePath +"\\"+ fileName);
                         //FileInputStream fis = new FileInputStream(fObj);
-                        if (signCardDataObj != null && docDataObj.getFlagRequireSign() && !signCardDataObj.getFlagSkipSigningDoc())
-                            docManager.signDocument(signCardDataObj.getSignatureCardKey(), signCardDataObj.getSignatureCardSlot(), signCardDataObj.getSignatureCardPassword(), pdfInputStream, tempFilePath + "\\signedPwd_" + fileName, docDataObj.getPdfPassword());
-                        else
+                        if (signCardDataObj != null && docDataObj.getFlagRequireSign() && !signCardDataObj.getFlagSkipSigningDoc()) {
+                            if(signCardDataObj.getFlagSoftToken()){
+
+                                CloudSigningService cloudSigningService = new CloudSigningServiceImpl("esign-roojai-insurance", pdfPasswordOwner);
+                                cloudSigningService.getCertValue(pdfInputStream,tempFilePath + "\\signedPwd_" + fileName,docDataObj.getPdfPassword());
+
+                            }else {
+
+                                docManager.signDocument(signCardDataObj.getSignatureCardKey(), signCardDataObj.getSignatureCardSlot(), signCardDataObj.getSignatureCardPassword(), pdfInputStream, tempFilePath + "\\signedPwd_" + fileName, docDataObj.getPdfPassword());
+                            }
+                        }else
                             docManager.passwordProtectDocument(pdfInputStream, docDataObj.getPdfPassword().getBytes(), pdfPasswordOwner.getBytes(), tempFilePath + "\\signedPwd_" + fileName);
 
 
@@ -202,7 +212,7 @@ public class ManageDocumentGeneratedJob extends QuartzJobBean {
                                             s3Mgr.uploadContent(bucketName, s3UploadName, fis, signedFile.length());
                                         }else {
                                             //Soft token
-                                            CloudSigningService cloudSigningService = new CloudSigningServiceImpl("esign-roojai-insurance");
+                                            CloudSigningService cloudSigningService = new CloudSigningServiceImpl("esign-roojai-insurance", null);
                                             cloudSigningService.getCertValue(pdfInputStream,tempFilePath + "\\Signed_" + fileName,null);
                                             signedFile = new File(tempFilePath + "\\Signed_" + fileName);
                                             fis = new FileInputStream(signedFile);

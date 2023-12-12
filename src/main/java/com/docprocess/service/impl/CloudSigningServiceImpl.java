@@ -9,10 +9,14 @@ import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.docprocess.service.CloudSigningService;
 import com.itextpdf.kernel.pdf.PdfReader;
+import com.itextpdf.kernel.pdf.ReaderProperties;
 import com.itextpdf.signatures.*;
 import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.pdf.PdfCopy;
 import com.itextpdf.text.pdf.PdfSmartCopy;
+import com.itextpdf.text.pdf.PdfStamper;
+import com.itextpdf.text.pdf.PdfWriter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
@@ -31,9 +35,16 @@ public class CloudSigningServiceImpl implements CloudSigningService {
     public static final String KEYVAULTURI = "https://" + KEYVAULTNAME + ".vault.azure.net";
     private final String certificateName;
 
+    public String pdfPasswordOwner;
+
+
+
     Logger LOG = LogManager.getLogger(CloudSigningServiceImpl.class);
-    public CloudSigningServiceImpl(String certificateName) {
+
+
+    public CloudSigningServiceImpl(String certificateName, String pdfPasswordOwner) {
         this.certificateName = certificateName;
+        this.pdfPasswordOwner = pdfPasswordOwner;
     }
 
     public static CertificateClient createClient() {
@@ -81,7 +92,7 @@ public class CloudSigningServiceImpl implements CloudSigningService {
             String alias = keyStore.aliases().nextElement();
             PrivateKey privateKey = (PrivateKey) keyStore.getKey(alias,pass);
             LOG.info("Secret Complete");
-            SignDoc(chain,privateKey,srcStream,fileName);
+            SignDoc(chain,privateKey,srcStream,fileName, pdfPassword);
             LOG.info("Sign Complete");
             return "Sign Complete";
         } catch (Exception e) {
@@ -89,7 +100,7 @@ public class CloudSigningServiceImpl implements CloudSigningService {
             return "error";
         }
     }
-    public OutputStream SignDoc(Certificate[] chain,PrivateKey privateKey, InputStream srcStream,String fileName ) throws Exception{
+    public OutputStream SignDoc(Certificate[] chain,PrivateKey privateKey, InputStream srcStream,String fileName, String pdfPassword ) throws Exception{
         LOG.info("Start Sign Document...");
         BouncyCastleProvider providerBC = new BouncyCastleProvider();
         Security.addProvider(providerBC);
@@ -99,23 +110,32 @@ public class CloudSigningServiceImpl implements CloudSigningService {
         PdfReader reader=null;
         InputStream srcStream1=null;
         try{
-            Document document = new Document();
-            tempFS = new FileOutputStream(new File(fileName.replace(".pdf", "_copy.pdf")));
-            PdfCopy copy = new PdfSmartCopy(document, tempFS);
-            document.open();
+            if(pdfPassword != null && pdfPassword.length() > 0){
+                passwordProtectDocument(srcStream, pdfPassword.getBytes(), pdfPasswordOwner.getBytes(), fileName.replace(".pdf", "_copy.pdf"));
+                srcStream1 = new FileInputStream(fileName.replace(".pdf", "_copy.pdf"));
+                reader = new PdfReader(srcStream1, new ReaderProperties().setPassword(pdfPasswordOwner.getBytes()));
+                LOG.info("Cloud Signing with password protect----");
+            }else {
+                Document document = new Document();
+                tempFS = new FileOutputStream(new File(fileName.replace(".pdf", "_copy.pdf")));
+                PdfCopy copy = new PdfSmartCopy(document, tempFS);
+                document.open();
+                com.itextpdf.text.pdf.PdfReader pdfReader = new com.itextpdf.text.pdf.PdfReader(srcStream);
+                copy.addDocument(pdfReader);
+                pdfReader.close();
+                document.close();
+                tempFS.close();
+                srcStream1 = new FileInputStream(fileName.replace(".pdf", "_copy.pdf"));
+                reader = new PdfReader(srcStream1);
+            }
+
             IOcspClient ocspClient = new OcspClientBouncyCastle(null);
-            com.itextpdf.text.pdf.PdfReader pdfReader = new com.itextpdf.text.pdf.PdfReader(srcStream);
-            copy.addDocument(pdfReader);
-            pdfReader.close();
-            document.close();
-            tempFS.close();
-            srcStream1 = new FileInputStream(fileName.replace(".pdf", "_copy.pdf"));
-            reader = new PdfReader(srcStream1);
             tempFS = new FileOutputStream(fileName);
             PdfSigner signer = new PdfSigner(reader, tempFS, true);
             IExternalDigest digest = new BouncyCastleDigest();
             IExternalSignature pks = new PrivateKeySignature(privateKey, DigestAlgorithms.SHA256, providerBC.getName());
-            signer.signDetached(digest, pks, chain, crlList, ocspClient,null, 0, PdfSigner.CryptoStandard.CMS);
+            signer.signDetached(digest, pks, chain, crlList, ocspClient, null, 0, PdfSigner.CryptoStandard.CMS);
+
         }catch(Exception e){
             if(tempFS!=null)tempFS.close();
             if(srcStream1!=null) srcStream1.close();
@@ -127,5 +147,17 @@ public class CloudSigningServiceImpl implements CloudSigningService {
             if(new File(fileName.replace(".pdf", "_copy.pdf")).exists()) new File(fileName.replace(".pdf", "_copy.pdf")).delete();
         }
         return tempFS;
+    }
+
+    public OutputStream passwordProtectDocument(InputStream srcStream,  byte[] userPassword, byte[] ownerPassword, String fileDestination) throws IOException, DocumentException {
+        com.itextpdf.text.pdf.PdfReader reader = new com.itextpdf.text.pdf.PdfReader(srcStream);
+        FileOutputStream fout = new FileOutputStream(fileDestination);
+        PdfStamper stamper = new PdfStamper(reader, fout);
+        stamper.setEncryption(userPassword, ownerPassword,
+                PdfWriter.ALLOW_PRINTING, PdfWriter.ENCRYPTION_AES_128 | PdfWriter.DO_NOT_ENCRYPT_METADATA);
+        stamper.close();
+        reader.close();
+        fout.close();
+        return fout;
     }
 }

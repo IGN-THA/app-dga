@@ -1,5 +1,6 @@
 package com.docprocess.controller;
 
+import com.docprocess.config.ConfigConstant;
 import com.docprocess.config.ErrorConfig;
 import com.docprocess.constant.PdfQueueProcessingStatus;
 import com.docprocess.manager.CacheManager;
@@ -256,11 +257,12 @@ public class DocumentController {
         return getCertValue();
     }
     private String getCertValue() throws IOException, JSONException, DocumentRenderException {
+        String pdfPasswordOwner = systemConfigRepository.findByConfigKey(ConfigConstant.PDF_PASSWORD_OWNER).getConfigValue();
         String currentPath = System.getProperty("user.dir");
         String fileName = "Voluntary Policy Schedule 02 1000-02540386-01-000.pdf";
         String tempFilePath = "\\DocGenFile\\RenderedFilePath\\";
         FileInputStream pdfInputStream = new FileInputStream(currentPath + "\\DocGenFile\\RenderedFilePath\\"+fileName);
-        CloudSigningService cloudSigningService = new CloudSigningServiceImpl("esign-roojai-insurance");
+        CloudSigningService cloudSigningService = new CloudSigningServiceImpl("esign-roojai-insurance", pdfPasswordOwner);
         cloudSigningService.getCertValue(pdfInputStream,currentPath + tempFilePath + "\\Signed_" + fileName,null);
         return "Signed";
     }
@@ -268,6 +270,7 @@ public class DocumentController {
     @PostMapping("/signCertWithFile")
     @ResponseBody
     public FileSystemResource CloudSigningService2(@RequestBody(required = true) MultipartFile file) throws IOException, JSONException, DocumentRenderException {
+        String pdfPasswordOwner = systemConfigRepository.findByConfigKey(ConfigConstant.PDF_PASSWORD_OWNER).getConfigValue();
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String currentPath = System.getProperty("user.dir");
         String tempFilePath = "\\DocGenFile\\RenderedFilePath\\";
@@ -283,7 +286,7 @@ public class DocumentController {
             outStream.write(buffer);
         }
         FileInputStream pdfInputStream = new FileInputStream(currentPath + "\\DocGenFile\\RenderedFilePath\\"+fileName);
-        CloudSigningService cloudSigningService = new CloudSigningServiceImpl("esign-roojai-insurance");
+        CloudSigningService cloudSigningService = new CloudSigningServiceImpl("esign-roojai-insurance", pdfPasswordOwner);
         cloudSigningService.getCertValue(pdfInputStream,currentPath + tempFilePath + "\\Signed_" + fileName,null);
 
         File signedFile = new File(currentPath + tempFilePath + "\\Signed_" + fileName);
