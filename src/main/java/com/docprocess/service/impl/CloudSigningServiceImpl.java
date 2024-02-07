@@ -7,6 +7,7 @@ import com.azure.security.keyvault.certificates.models.KeyVaultCertificateWithPo
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
+import com.docprocess.model.SignatureCardData;
 import com.docprocess.service.CloudSigningService;
 import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.ReaderProperties;
@@ -20,6 +21,9 @@ import com.itextpdf.text.pdf.PdfWriter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
 import java.io.*;
 import java.security.KeyStore;
 import java.security.PrivateKey;
@@ -30,34 +34,25 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
+@Service
 public class CloudSigningServiceImpl implements CloudSigningService {
-    public static final String KEYVAULTNAME = "roojai-az-keyvault";
-    public static final String KEYVAULTURI = "https://" + KEYVAULTNAME + ".vault.azure.net";
-    private final String certificateName;
-
-    public String pdfPasswordOwner;
-
-
 
     Logger LOG = LogManager.getLogger(CloudSigningServiceImpl.class);
 
+    String keyVaultUri;
+    String certificateName;
 
-    public CloudSigningServiceImpl(String certificateName, String pdfPasswordOwner) {
-        this.certificateName = certificateName;
-        this.pdfPasswordOwner = pdfPasswordOwner;
-    }
-
-    public static CertificateClient createClient() {
+    public CertificateClient createClient() {
         CertificateClient certificateClient = new CertificateClientBuilder()
-                .vaultUrl(KEYVAULTURI)
+                .vaultUrl(keyVaultUri)
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .buildClient();
         return certificateClient;
     }
 
-    public static SecretClient createSecretClient() {
+    public SecretClient createSecretClient() {
         SecretClient secretClient = new SecretClientBuilder()
-                .vaultUrl(KEYVAULTURI)
+                .vaultUrl(keyVaultUri)
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .buildClient();
         return secretClient;
@@ -70,10 +65,14 @@ public class CloudSigningServiceImpl implements CloudSigningService {
     }
 
     @Override
-    public String getCertValue(InputStream srcStream, String fileName, String pdfPassword) {
+    public String getCertValue(InputStream srcStream, String fileName, String pdfPassword, String pdfPasswordOwner, SignatureCardData signatureCardData) {
         BouncyCastleProvider providerBC = new BouncyCastleProvider();
         Security.addProvider(providerBC);
         try {
+            if(signatureCardData != null){
+                keyVaultUri = (String) signatureCardData.getApiConfigInfo().get("host_name");
+                certificateName = (String) signatureCardData.getApiConfigInfo().get("certificate_name");
+            }
             LOG.info("Retrive Certificate....");
             KeyVaultCertificateWithPolicy certificateWithPolicy = createClient().getCertificate(certificateName);
             byte[] byteCertificate = certificateWithPolicy.getCer();
@@ -92,7 +91,7 @@ public class CloudSigningServiceImpl implements CloudSigningService {
             String alias = keyStore.aliases().nextElement();
             PrivateKey privateKey = (PrivateKey) keyStore.getKey(alias,pass);
             LOG.info("Secret Complete");
-            SignDoc(chain,privateKey,srcStream,fileName, pdfPassword);
+            SignDoc(chain,privateKey,srcStream,fileName, pdfPassword, pdfPasswordOwner);
             LOG.info("Sign Complete");
             return "Sign Complete";
         } catch (Exception e) {
@@ -100,7 +99,7 @@ public class CloudSigningServiceImpl implements CloudSigningService {
             return "error";
         }
     }
-    public OutputStream SignDoc(Certificate[] chain,PrivateKey privateKey, InputStream srcStream,String fileName, String pdfPassword ) throws Exception{
+    public OutputStream SignDoc(Certificate[] chain,PrivateKey privateKey, InputStream srcStream,String fileName, String pdfPassword, String pdfPasswordOwner ) throws Exception{
         LOG.info("Start Sign Document...");
         BouncyCastleProvider providerBC = new BouncyCastleProvider();
         Security.addProvider(providerBC);

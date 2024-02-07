@@ -11,6 +11,7 @@ import com.docprocess.manager.docx.ExternalApiInfoManager;
 import com.docprocess.manager.docx.RenderDocumentManager;
 import com.docprocess.model.DocumentGenerateQueueData;
 import com.docprocess.model.DocumentTypeData;
+import com.docprocess.model.SignatureCardData;
 import com.docprocess.pojo.Accessory;
 import com.docprocess.pojo.PdfGenerationQueueResponse;
 import com.docprocess.pojo.PdfGenerationRequest;
@@ -114,6 +115,9 @@ public class DocumentController {
 
     @Autowired
     ExternalApiInfoRepository externalApiInfoRepository;
+
+    @Autowired
+    private CloudSigningService cloudSigningService;
 
     Logger logger = LogManager.getLogger(DocumentController.class);
 
@@ -258,12 +262,12 @@ public class DocumentController {
     }
     private String getCertValue() throws IOException, JSONException, DocumentRenderException {
         String pdfPasswordOwner = systemConfigRepository.findByConfigKey(ConfigConstant.PDF_PASSWORD_OWNER).getConfigValue();
+        SignatureCardData signatureCardData = signatureCardDataRepository.findBySignatureCardName("Roojai Insurance");
         String currentPath = System.getProperty("user.dir");
         String fileName = "Voluntary Policy Schedule 02 1000-02540386-01-000.pdf";
         String tempFilePath = "\\DocGenFile\\RenderedFilePath\\";
         FileInputStream pdfInputStream = new FileInputStream(currentPath + "\\DocGenFile\\RenderedFilePath\\"+fileName);
-        CloudSigningService cloudSigningService = new CloudSigningServiceImpl("esign-roojai-insurance", pdfPasswordOwner);
-        cloudSigningService.getCertValue(pdfInputStream,currentPath + tempFilePath + "\\Signed_" + fileName,null);
+        cloudSigningService.getCertValue(pdfInputStream,currentPath + tempFilePath + "\\Signed_" + fileName,null, pdfPasswordOwner, signatureCardData);
         return "Signed";
     }
 
@@ -271,6 +275,7 @@ public class DocumentController {
     @ResponseBody
     public FileSystemResource CloudSigningService2(@RequestBody(required = true) MultipartFile file) throws IOException, JSONException, DocumentRenderException {
         String pdfPasswordOwner = systemConfigRepository.findByConfigKey(ConfigConstant.PDF_PASSWORD_OWNER).getConfigValue();
+        SignatureCardData signatureCardData = signatureCardDataRepository.findBySignatureCardName("Roojai Insurance");
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String currentPath = System.getProperty("user.dir");
         String tempFilePath = "\\DocGenFile\\RenderedFilePath\\";
@@ -286,8 +291,7 @@ public class DocumentController {
             outStream.write(buffer);
         }
         FileInputStream pdfInputStream = new FileInputStream(currentPath + "\\DocGenFile\\RenderedFilePath\\"+fileName);
-        CloudSigningService cloudSigningService = new CloudSigningServiceImpl("esign-roojai-insurance", pdfPasswordOwner);
-        cloudSigningService.getCertValue(pdfInputStream,currentPath + tempFilePath + "\\Signed_" + fileName,null);
+        cloudSigningService.getCertValue(pdfInputStream,currentPath + tempFilePath + "\\Signed_" + fileName,null, pdfPasswordOwner, signatureCardData);
 
         File signedFile = new File(currentPath + tempFilePath + "\\Signed_" + fileName);
         return new FileSystemResource(signedFile);

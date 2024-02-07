@@ -60,6 +60,9 @@ public class ManageDocumentGeneratedJob extends QuartzJobBean {
     @Autowired
     private EntityManagerFactory sessionFactory;
 
+    @Autowired
+    private CloudSigningService cloudSigningService;
+
     String pdfPasswordOwner;
 
     Logger logger = LogManager.getLogger(ManageDocumentGeneratedJob.class);
@@ -151,8 +154,7 @@ public class ManageDocumentGeneratedJob extends QuartzJobBean {
                         if (signCardDataObj != null && docDataObj.getFlagRequireSign() && !signCardDataObj.getFlagSkipSigningDoc()) {
                             if(signCardDataObj.getFlagSoftToken()){
 
-                                CloudSigningService cloudSigningService = new CloudSigningServiceImpl("esign-roojai-insurance", pdfPasswordOwner);
-                                cloudSigningService.getCertValue(pdfInputStream,tempFilePath + "\\signedPwd_" + fileName,docDataObj.getPdfPassword());
+                                cloudSigningService.getCertValue(pdfInputStream,tempFilePath + "\\signedPwd_" + fileName,docDataObj.getPdfPassword(), pdfPasswordOwner, signCardDataObj);
 
                             }else {
 
@@ -212,8 +214,7 @@ public class ManageDocumentGeneratedJob extends QuartzJobBean {
                                             s3Mgr.uploadContent(bucketName, s3UploadName, fis, signedFile.length());
                                         }else {
                                             //Soft token
-                                            CloudSigningService cloudSigningService = new CloudSigningServiceImpl("esign-roojai-insurance", null);
-                                            cloudSigningService.getCertValue(pdfInputStream,tempFilePath + "\\Signed_" + fileName,null);
+                                            cloudSigningService.getCertValue(pdfInputStream,tempFilePath + "\\Signed_" + fileName,null, null, signCardDataObj);
                                             signedFile = new File(tempFilePath + "\\Signed_" + fileName);
                                             fis = new FileInputStream(signedFile);
                                             s3UploadName = validateFolder + fileUploadName;
