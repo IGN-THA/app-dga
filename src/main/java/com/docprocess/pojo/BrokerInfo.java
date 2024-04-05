@@ -29,4 +29,7 @@ public class BrokerInfo {
 
     @JsonProperty("imageUrl")
     private String imageUrl;
+
+    @JsonProperty("intermediaryReptEmail")
+    private String intermediaryReptEmail;
 }

@@ -252,11 +252,15 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
         templateDetail.setVariable("Quote_createdOn", OffsetDateTime.now());
         templateDetail.setVariable("Total_AnnualPrice",ctx.getQuote().getPremiumByPmntFrequency()>0?ctx.getQuote().getPremiumByPmntFrequency():ctx.getQuote().getTotalPremium()); // templateDetail.setVariable("Quote", ctx.getQuote());
 
+        if (ctx.getQuote().getSalary() != null){
+            templateDetail.setVariable("Quote_salary", ctx.getQuote().getSalary());
+        }
         if (ctx.getBrokerInfo()!=null && ctx.getBrokerInfo().getIntermediaryAccountID()!=null && ctx.getBrokerInfo().getIntermediaryName()!=null) {
             templateDetail.setVariable("Service_provider", ctx.getBrokerInfo().getIntermediaryName());
             templateDetail.setVariable("Service_provider_phone", ctx.getBrokerInfo().getIntermediaryPhoneNumber());
             templateDetail.setVariable("Service_provider_id", ctx.getBrokerInfo().getIntermediaryAccountID());
             templateDetail.setVariable("Service_provider_account_source", ctx.getBrokerInfo().getAccountSource());
+            templateDetail.setVariable("Service_provider_email", ctx.getBrokerInfo().getIntermediaryReptEmail());
             templateDetail.setVariable("Service_provider_call_file", ctx.getBrokerInfo().getCreateCallFile());
             if (ctx.getBrokerInfo().getImageUrl()!=null) {
                 templateDetail.setVariable("Service_provider_imageUrl", ctx.getBrokerInfo().getImageUrl());
@@ -300,6 +304,9 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
             if (ctx.getPhaccount().getGender()!=null && ctx.getPhaccount().getMaritialStatus()!=null) {
                 templateDetail.setVariable("PhAccount_Gender_MaritalStatus", ctx.getPhaccount().getGender()+" / "+ctx.getPhaccount().getMaritialStatus());
             }
+            if(ctx.getPhaccount().getOccupation() != null){
+                templateDetail.setVariable("PhAccount_Occupation", isValidString(ctx.getPhaccount().getOccupation()));
+            }
         }
 
         if (ctx.getDrivers()!=null && ctx.getDrivers().size()>0 && ctx.getDrivers().get(0)!=null) {
@@ -319,7 +326,10 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
         ncb="I don't know".equalsIgnoreCase(ncb)?"N":ncb;
         templateDetail.setVariable("No_Claim_bonus", isValidString(ncb).replace("%",""));
         templateDetail.setVariable("Tentative_start_date", ctx.getQuote().getTentativeStartDate());
-        double volPremium= ctx.getQuoteLineList().get(0).getCoverGrossPremium();
+        double volPremium = 0;
+        if(ctx.getQuoteLineList().size()>0){
+            volPremium= ctx.getQuoteLineList().get(0).getCoverGrossPremium();
+        }
         templateDetail.setVariable("Voluntary_premium",volPremium>0?volPremium:ctx.getQuote().getTotalPremium());
         if (ctx.getQuote().getVolPrice()>0) {
             templateDetail.setVariable("Voluntary_premium", ctx.getQuote().getVolPrice());
@@ -333,14 +343,15 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
         templateDetail.setVariable("Excess", ctx.getQuote().getExcess());
         templateDetail.setVariable("DriverPlan", ctx.getQuote().getDriverPlan());
         templateDetail.setVariable("GaragePlan", ctx.getQuote().getWorkshopType());
-
-        templateDetail.setVariable("hit_another_vehicle", ctx.getQuote().getPlanType().isCollisionWithAnotherVehicle());
-        templateDetail.setVariable("another_vehicle_hits_you", ctx.getQuote().getPlanType().isCollisionWithoutThirdParty());
-        templateDetail.setVariable("crash_by_yourself", ctx.getQuote().getPlanType().isCrashByYourself());
-        templateDetail.setVariable("Theft", ctx.getQuote().getPlanType().isTheft());
-        templateDetail.setVariable("Fire", ctx.getQuote().getPlanType().isFire());
-        templateDetail.setVariable("Flood", ctx.getQuote().getPlanType().isFlood());
-        templateDetail.setVariable("towing", ctx.getQuote().getPlanType().isTowing());
+        if(ctx.getQuote().getPlanType() != null){
+            templateDetail.setVariable("hit_another_vehicle", ctx.getQuote().getPlanType().isCollisionWithAnotherVehicle());
+            templateDetail.setVariable("another_vehicle_hits_you", ctx.getQuote().getPlanType().isCollisionWithoutThirdParty());
+            templateDetail.setVariable("crash_by_yourself", ctx.getQuote().getPlanType().isCrashByYourself());
+            templateDetail.setVariable("Theft", ctx.getQuote().getPlanType().isTheft());
+            templateDetail.setVariable("Fire", ctx.getQuote().getPlanType().isFire());
+            templateDetail.setVariable("Flood", ctx.getQuote().getPlanType().isFlood());
+            templateDetail.setVariable("towing", ctx.getQuote().getPlanType().isTowing());
+        }
 
         templateDetail.setVariable("Addon_accessories", ctx.getQuote().getCarAccessoriesSI());
 
@@ -395,8 +406,10 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
                 templateDetail.setVariable("Fire_and_theft_SI", ctx.getQuoteLineList().get(0).getFireAndThefSi());
         }
 
+        if(ctx.getQuote().getCompulsoryPlan() != null){
             String compulsoryPlan = ctx.getQuote().getCompulsoryPlan();
-        templateDetail.setVariable("Compulsory_carInsurance",compulsoryPlan.equalsIgnoreCase("NoComp") || compulsoryPlan.equalsIgnoreCase("No")  ? "Not Included" : "Included");
+            templateDetail.setVariable("Compulsory_carInsurance",compulsoryPlan.equalsIgnoreCase("NoComp") || compulsoryPlan.equalsIgnoreCase("No")  ? "Not Included" : "Included");
+        }
 
         if (ctx.getQuote().getRsaProduct()!=null) {
             templateDetail.setVariable("Roadside_assistance", ctx.getQuote().getRsaProduct().equalsIgnoreCase("No") ? "Not Included" : "Included");
@@ -444,6 +457,52 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
 
 
         templateDetail.setVariable("locales", localeMap);
+
+        if(ctx.getQuote().getProductType()!=null){
+            if (ctx.getQuote().getProductType().equals("PAComboSave")){
+                templateDetail.setVariable("Product_type", ctx.getQuote().getProductType());
+                templateDetail.setVariable("PAC_PA1Prem", ctx.getQuote().getPAComboSavePA1Prem());
+                templateDetail.setVariable("PAC_PA1SumAssured", ctx.getQuote().getPAComboSavePA1SumAssured());
+                templateDetail.setVariable("PAC_AddOnPrem", ctx.getQuote().getPAComboSaveAddOnPrem());
+                templateDetail.setVariable("PAC_StampDuty", ctx.getQuote().getPAComboSaveStampDuty());
+            }
+        }
+
+
+        if (ctx.getCoverages()!=null){
+            templateDetail.setVariable("PAC_Cover_PA1", ctx.getCoverages().getPA1());
+            templateDetail.setVariable("PAC_Cover_PA1Prem", ctx.getCoverages().getPA1Prem());
+
+            templateDetail.setVariable("PAC_Cover_ME", ctx.getCoverages().getME());
+            templateDetail.setVariable("PAC_Cover_MEPrem", ctx.getCoverages().getMEPrem());
+
+            templateDetail.setVariable("PAC_Cover_Daily_Cash", ctx.getCoverages().getDaily_Cash());
+            templateDetail.setVariable("PAC_Cover_Daily_CashPrem", ctx.getCoverages().getDaily_CashPrem());
+
+            templateDetail.setVariable("PAC_Cover_Public_Accident", ctx.getCoverages().getPublic_Accident());
+            templateDetail.setVariable("PAC_Cover_Public_AccidentPrem", ctx.getCoverages().getPublic_AccidentPrem());
+
+            templateDetail.setVariable("PAC_Cover_Broken_Bone", ctx.getCoverages().getBroken_Bone());
+            templateDetail.setVariable("PAC_Cover_Broken_BonePrem", ctx.getCoverages().getBroken_BonePrem());
+
+            templateDetail.setVariable("PAC_Cover_Murdered", ctx.getCoverages().getMurdered());
+            templateDetail.setVariable("PAC_Cover_MurderedPrem", ctx.getCoverages().getMurderedPrem());
+
+            templateDetail.setVariable("PAC_Cover_Motorcycle", ctx.getCoverages().getMotorcycle());
+            templateDetail.setVariable("PAC_Cover_MotorcyclePrem", ctx.getCoverages().getMotorcyclePrem());
+
+            templateDetail.setVariable("PAC_Cover_Extreme_Sports", ctx.getCoverages().getExtreme_Sports());
+            templateDetail.setVariable("PAC_Cover_Extreme_SportsPrem", ctx.getCoverages().getExtreme_SportsPrem());
+
+            templateDetail.setVariable("PAC_Cover_Dental", ctx.getCoverages().getDental());
+            templateDetail.setVariable("PAC_Cover_DentalPrem", ctx.getCoverages().getDentalPrem());
+
+            templateDetail.setVariable("PAC_Cover_FE_Injury", ctx.getCoverages().getFE_Injury());
+            templateDetail.setVariable("PAC_Cover_FE_InjuryPrem", ctx.getCoverages().getFE_InjuryPrem());
+
+            templateDetail.setVariable("PAC_Cover_FE_Illness", ctx.getCoverages().getFE_Illness());
+            templateDetail.setVariable("PAC_Cover_FE_IllnessPrem", ctx.getCoverages().getFE_IllnessPrem());
+        }
 
         Set<String> variables = templateDetail.getVariableNames();
 

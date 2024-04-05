@@ -4,6 +4,8 @@ import com.docprocess.constant.PlanType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -320,4 +322,19 @@ public class Quote {
 
     @JsonProperty("policyInsurer")
     private String PolicyInsurer;
+
+    @JsonProperty("salary")
+    private String salary;
+
+    @JsonProperty("PAComboSavePA1Prem")
+    private BigDecimal PAComboSavePA1Prem;
+
+    @JsonProperty("PAComboSavePA1SumAssured")
+    private BigDecimal PAComboSavePA1SumAssured;
+
+    @JsonProperty("PAComboSaveAddOnPrem")
+    private BigDecimal PAComboSaveAddOnPrem;
+
+    @JsonProperty("PAComboSaveStampDuty")
+    private BigDecimal PAComboSaveStampDuty;
 }

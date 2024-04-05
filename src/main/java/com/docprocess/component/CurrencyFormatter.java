@@ -48,4 +48,23 @@ public class CurrencyFormatter {
                 })
                 .orElse("");
     }
+
+    public String formatDecimal(BigDecimal value, Locale locale) {
+        DecimalFormat formatter = new DecimalFormat("#,##0.00");
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+        symbols.setGroupingSeparator(',');
+        return Optional.ofNullable(value)
+                .filter(it -> it.compareTo(BigDecimal.ZERO) > 0)
+//                .map(it -> it.setScale(2, RoundingMode.HALF_UP))
+                .map(formatter::format)
+                .map(it -> {
+                    if (locale.getLanguage().equalsIgnoreCase("en")) {
+                        return it + " THB";
+                    }else if (locale.getLanguage().equalsIgnoreCase("zh")) {
+                        return it + " THB";
+                    }
+                    return it + " บาท";
+                })
+                .orElse("-");
+    }
 }

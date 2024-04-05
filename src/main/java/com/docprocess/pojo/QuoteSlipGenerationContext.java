@@ -25,4 +25,5 @@ public class QuoteSlipGenerationContext {
     private PhAccount phaccount;
     private Quote quote;
     private List<QuoteLineList> quoteLineList;
+    private Coverages coverages;
 }
