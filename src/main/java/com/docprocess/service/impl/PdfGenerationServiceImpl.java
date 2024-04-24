@@ -504,12 +504,12 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
             templateDetail.setVariable("PAC_Cover_FE_IllnessPrem", ctx.getCoverages().getFE_IllnessPrem());
         }
 
-        Set<String> variables = templateDetail.getVariableNames();
-
-        logger.info("\nVariables in template");
-        variables.forEach((n) ->
-                logger.info(n + ": " + templateDetail.getVariable(n))
-        );
+//        Set<String> variables = templateDetail.getVariableNames();
+//
+//        logger.info("\nVariables in template");
+//        variables.forEach((n) ->
+//                logger.info(n + ": " + templateDetail.getVariable(n))
+//        );
         return templateDetail;
     }
 
