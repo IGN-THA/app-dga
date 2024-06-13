@@ -206,7 +206,7 @@ public class PostDocumentProcessJob  extends QuartzJobBean {
             headers.put("Authorization", tokenType + " " + accessToken);
             headers.put("Content-Type", "application/json; charset=UTF-8");
 
-            responseMsg = handler.callRestAPI(tagList.toString(), fmsappUpdateTagAPI, headers, null);
+            responseMsg = handler.callRestAPI(tagList, fmsappUpdateTagAPI, headers, null);
         } catch (JSONException e) {
             responseMsg = "Failed";
             String errorMessage = ErrorConfig.getErrorMessages(this.getClass().getName(), "updateTagDetails", e);

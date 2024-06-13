@@ -3,10 +3,7 @@ package com.docprocess.controller;
 import com.docprocess.config.ConfigConstant;
 import com.docprocess.config.ErrorConfig;
 import com.docprocess.constant.PdfQueueProcessingStatus;
-import com.docprocess.manager.CacheManager;
-import com.docprocess.manager.DocumentRenderException;
-import com.docprocess.manager.EmailServiceManager;
-import com.docprocess.manager.S3BucketManager;
+import com.docprocess.manager.*;
 import com.docprocess.manager.docx.ExternalApiInfoManager;
 import com.docprocess.manager.docx.RenderDocumentManager;
 import com.docprocess.model.DocumentGenerateQueueData;
@@ -26,7 +23,9 @@ import org.apache.http.HttpStatus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.util.Supplier;
+import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.FileSystemResource;
@@ -39,12 +38,15 @@ import javax.annotation.security.PermitAll;
 import javax.persistence.EntityManagerFactory;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/doc")
@@ -295,6 +297,67 @@ public class DocumentController {
 
         File signedFile = new File(currentPath + tempFilePath + "\\Signed_" + fileName);
         return new FileSystemResource(signedFile);
+    }
+
+    @GetMapping("/test/{sfid}")
+    public String test(@PathVariable(name = "sfid") String sfid) throws JSONException {
+        DocumentGenerateQueueData docGenData = documentDataRepository.findBySfid(sfid);
+        JSONObject jsonObj = new JSONObject();
+        JSONObject tagObj = new JSONObject();
+        jsonObj.put("prefix", docGenData.getReferenceNumber());
+        tagObj.put(docGenData.getDocumentName() + ".pdf", new JSONArray().put("Tax invoice GA"));
+        jsonObj.put("tags", tagObj);
+        return updateTagDetails(jsonObj.toString());
+    }
+
+    public String updateTagDetails(String tagList) {
+
+        String fmsappAuthAPIEndpoint = systemConfigRepository.findByConfigKey(ConfigConstant.FMSAPP_AUTHENTICATE_API).getConfigValue();
+        String fmsappUpdateTagAPI = systemConfigRepository.findByConfigKey(ConfigConstant.FMSAPP_UPDATETAG_API).getConfigValue();
+
+        String responseMsg = "Success";
+
+        HttpHandler handler = new HttpHandler();
+        Map<String, String> headers = new HashMap<String, String>();
+        Map<String, String> params = new HashMap<String, String>();
+
+        try {
+            JSONObject tokenCache = CacheManager.getFmsAppTokenCache();
+            JSONObject response = null;
+            String tokenType;
+            String accessToken;
+            String instanceURL;
+            if (tokenCache == null || ((System.currentTimeMillis() - tokenCache.getLong("expiryTime")) >= 300000)) {
+
+                String userName = systemConfigRepository.findByConfigKey(ConfigConstant.FMSAPP_USERNAME).getConfigValue();
+                String password = systemConfigRepository.findByConfigKey(ConfigConstant.FMSAPP_PASSWORD).getConfigValue();
+
+                JSONObject jsonBody = new JSONObject();
+                jsonBody.put("username", userName);
+                jsonBody.put("password", password);
+
+                headers.put("Content-Type", "application/json; charset=UTF-8");
+
+                response = new JSONObject(handler.callRestAPI(jsonBody.toString(), fmsappAuthAPIEndpoint, headers, null));
+                accessToken = response.getString("token");
+                CacheManager.updateFmaAppCache("bearer", accessToken);
+                tokenCache = CacheManager.getFmsAppTokenCache();
+            }
+
+            tokenType = tokenCache.getString("token_type");
+            accessToken = tokenCache.getString("access_token");
+
+            headers = new HashMap<>();
+            headers.put("Authorization", tokenType + " " + accessToken);
+            headers.put("Content-Type", "application/json; charset=UTF-8");
+
+            responseMsg = handler.callRestAPI(tagList, fmsappUpdateTagAPI, headers, null);
+        } catch (JSONException e) {
+            responseMsg = "Failed";
+            String errorMessage = ErrorConfig.getErrorMessages(this.getClass().getName(), "updateTagDetails", e);
+            logger.error(errorMessage);
+        }
+        return responseMsg;
     }
 
 }

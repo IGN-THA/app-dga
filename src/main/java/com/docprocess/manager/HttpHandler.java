@@ -112,7 +112,7 @@ public class HttpHandler {
             }
 
             if (requestBody != null && requestBody.length() > 0) {
-                postRequest.setEntity(new StringEntity(requestBody));
+                postRequest.setEntity(new StringEntity(requestBody, "UTF-8"));
             }
 
             HttpResponse response = httpClient.execute(postRequest);
