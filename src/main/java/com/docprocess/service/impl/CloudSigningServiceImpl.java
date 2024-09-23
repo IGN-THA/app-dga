@@ -3,6 +3,7 @@ package com.docprocess.service.impl;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.certificates.CertificateClient;
 import com.azure.security.keyvault.certificates.CertificateClientBuilder;
+import com.azure.security.keyvault.certificates.models.KeyVaultCertificate;
 import com.azure.security.keyvault.certificates.models.KeyVaultCertificateWithPolicy;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
@@ -58,7 +59,8 @@ public class CloudSigningServiceImpl implements CloudSigningService {
         return secretClient;
     }
 
-    public String GetSecret(KeyVaultCertificateWithPolicy certificateWithPolicy){
+    public String GetSecret(KeyVaultCertificate certificateWithPolicy){
+
         KeyVaultSecret secret = createSecretClient().getSecret(certificateName, certificateWithPolicy.getProperties().getVersion());
         String downloadedPK = secret.getValue();
         return downloadedPK;
@@ -69,12 +71,15 @@ public class CloudSigningServiceImpl implements CloudSigningService {
         BouncyCastleProvider providerBC = new BouncyCastleProvider();
         Security.addProvider(providerBC);
         try {
+            String certificateVersion = null;
             if(signatureCardData != null){
                 keyVaultUri = (String) signatureCardData.getApiConfigInfo().get("host_name");
                 certificateName = (String) signatureCardData.getApiConfigInfo().get("certificate_name");
+                certificateVersion = (String) signatureCardData.getApiConfigInfo().get("version");
             }
             LOG.info("Retrive Certificate....");
-            KeyVaultCertificateWithPolicy certificateWithPolicy = createClient().getCertificate(certificateName);
+
+            KeyVaultCertificate certificateWithPolicy = createClient().getCertificateVersion(certificateName, certificateVersion);
             byte[] byteCertificate = certificateWithPolicy.getCer();
             InputStream inputStreamCert = new ByteArrayInputStream(byteCertificate);
             CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
@@ -83,6 +88,9 @@ public class CloudSigningServiceImpl implements CloudSigningService {
             LOG.info("Certificate Complete");
             LOG.info("Retrive Secret....");
             String downloadedPK = GetSecret(certificateWithPolicy);
+            if (downloadedPK == null || downloadedPK.isEmpty()) {
+                throw new IllegalStateException("Secret is not available or is disabled.");
+            }
             byte[] privateKeyBytes = Base64.getDecoder().decode(downloadedPK);
             InputStream bais = new ByteArrayInputStream(privateKeyBytes);
             KeyStore keyStore = KeyStore.getInstance("PKCS12");
@@ -96,6 +104,7 @@ public class CloudSigningServiceImpl implements CloudSigningService {
             return "Sign Complete";
         } catch (Exception e) {
             LOG.error(e.getMessage());
+            e.printStackTrace();
             return "error";
         }
     }
