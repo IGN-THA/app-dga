@@ -4,19 +4,16 @@ import com.docprocess.config.ConfigConstant;
 import com.docprocess.config.ErrorConfig;
 import com.docprocess.constant.PdfQueueProcessingStatus;
 import com.docprocess.manager.*;
-import com.docprocess.manager.docx.ExternalApiInfoManager;
 import com.docprocess.manager.docx.RenderDocumentManager;
 import com.docprocess.model.DocumentGenerateQueueData;
 import com.docprocess.model.DocumentTypeData;
 import com.docprocess.model.SignatureCardData;
-import com.docprocess.pojo.Accessory;
 import com.docprocess.pojo.PdfGenerationQueueResponse;
 import com.docprocess.pojo.PdfGenerationRequest;
 import com.docprocess.repository.*;
 import com.docprocess.service.CloudSigningService;
 import com.docprocess.service.PdfGenerationService;
 import com.docprocess.service.TemplateService;
-import com.docprocess.service.impl.CloudSigningServiceImpl;
 import com.google.common.net.HttpHeaders;
 import io.reactivex.rxjava3.core.Single;
 import org.apache.http.HttpStatus;
@@ -38,7 +35,6 @@ import javax.annotation.security.PermitAll;
 import javax.persistence.EntityManagerFactory;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
@@ -269,7 +265,7 @@ public class DocumentController {
         String fileName = "Voluntary Policy Schedule 02 1000-02540386-01-000.pdf";
         String tempFilePath = "\\DocGenFile\\RenderedFilePath\\";
         FileInputStream pdfInputStream = new FileInputStream(currentPath + "\\DocGenFile\\RenderedFilePath\\"+fileName);
-        cloudSigningService.getCertValue(pdfInputStream,currentPath + tempFilePath + "\\Signed_" + fileName,null, pdfPasswordOwner, signatureCardData);
+        cloudSigningService.signWithVaultCertificate(pdfInputStream,currentPath + tempFilePath + "\\Signed_" + fileName,null, pdfPasswordOwner, signatureCardData);
         return "Signed";
     }
 
@@ -293,7 +289,7 @@ public class DocumentController {
             outStream.write(buffer);
         }
         FileInputStream pdfInputStream = new FileInputStream(currentPath + "\\DocGenFile\\RenderedFilePath\\"+fileName);
-        cloudSigningService.getCertValue(pdfInputStream,currentPath + tempFilePath + "\\Signed_" + fileName,null, pdfPasswordOwner, signatureCardData);
+        cloudSigningService.signWithVaultCertificate(pdfInputStream,currentPath + tempFilePath + "\\Signed_" + fileName,null, pdfPasswordOwner, signatureCardData);
 
         File signedFile = new File(currentPath + tempFilePath + "\\Signed_" + fileName);
         return new FileSystemResource(signedFile);

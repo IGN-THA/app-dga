@@ -15,7 +15,6 @@ import com.docprocess.repository.SignatureCardDataRepository;
 import com.docprocess.repository.SystemConfigRepository;
 import com.docprocess.service.ApiSigningService;
 import com.docprocess.service.CloudSigningService;
-import com.docprocess.service.impl.CloudSigningServiceImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.poi.util.IOUtils;
@@ -151,13 +150,10 @@ public class ManageDocumentGeneratedJob extends QuartzJobBean {
                         //docManager.passwordProtectDocument(inputPassProtect, docDataObj.getPdfPassword().getBytes(), pdfPasswordOwner.getBytes(), tempFilePath + "\\" + fileName);
                         //File fObj = new File(tempFilePath +"\\"+ fileName);
                         //FileInputStream fis = new FileInputStream(fObj);
-                        if (signCardDataObj != null && docDataObj.getFlagRequireSign() && !signCardDataObj.getFlagSkipSigningDoc()) {
+                        if (signCardDataObj != null && docDataObj.getFlagRequireSign() && !signCardDataObj.getFlagSkipSigningDoc() && !signCardDataObj.getFlagSigningUsingAPI()) {
                             if(signCardDataObj.getFlagSoftToken()){
-
-                                cloudSigningService.getCertValue(pdfInputStream,tempFilePath + "\\signedPwd_" + fileName,docDataObj.getPdfPassword(), pdfPasswordOwner, signCardDataObj);
-
+                                cloudSigningService.signWithVaultCertificate(pdfInputStream,tempFilePath + "\\signedPwd_" + fileName,docDataObj.getPdfPassword(), pdfPasswordOwner, signCardDataObj);
                             }else {
-
                                 docManager.signDocument(signCardDataObj.getSignatureCardKey(), signCardDataObj.getSignatureCardSlot(), signCardDataObj.getSignatureCardPassword(), pdfInputStream, tempFilePath + "\\signedPwd_" + fileName, docDataObj.getPdfPassword());
                             }
                         }else
@@ -193,6 +189,7 @@ public class ManageDocumentGeneratedJob extends QuartzJobBean {
                     try {
                         if (signCardDataObj != null && !docDataObj.getFlagDocumentSigned()) {
                             try {
+                                s3UploadName = validateFolder + fileUploadName;
                                 if (!signCardDataObj.getFlagSkipSigningDoc()) {
                                     if (signCardDataObj.getFlagSigningUsingAPI()) {
                                         SignatureCardDataType signType = SignatureCardDataType.fromValue(signCardDataObj.getSignatureCardName());
@@ -210,14 +207,12 @@ public class ManageDocumentGeneratedJob extends QuartzJobBean {
                                             docManager.signDocument(signCardDataObj.getSignatureCardKey(), signCardDataObj.getSignatureCardSlot(), signCardDataObj.getSignatureCardPassword(), pdfInputStream, tempFilePath + "\\Signed_" + fileName, null);
                                             signedFile = new File(tempFilePath + "\\Signed_" + fileName);
                                             fis = new FileInputStream(signedFile);
-                                            s3UploadName = validateFolder + fileUploadName;
                                             s3Mgr.uploadContent(bucketName, s3UploadName, fis, signedFile.length());
                                         }else {
                                             //Soft token
-                                            cloudSigningService.getCertValue(pdfInputStream,tempFilePath + "\\Signed_" + fileName,null, null, signCardDataObj);
+                                            cloudSigningService.signWithVaultCertificate(pdfInputStream,tempFilePath + "\\Signed_" + fileName,null, null, signCardDataObj);
                                             signedFile = new File(tempFilePath + "\\Signed_" + fileName);
                                             fis = new FileInputStream(signedFile);
-                                            s3UploadName = validateFolder + fileUploadName;
                                             s3Mgr.uploadContent(bucketName, s3UploadName, fis, signedFile.length());
                                         }
                                     }

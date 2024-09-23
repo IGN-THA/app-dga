@@ -67,7 +67,7 @@ public class CloudSigningServiceImpl implements CloudSigningService {
     }
 
     @Override
-    public String getCertValue(InputStream srcStream, String fileName, String pdfPassword, String pdfPasswordOwner, SignatureCardData signatureCardData) {
+    public String signWithVaultCertificate(InputStream srcStream, String fileName, String pdfPassword, String pdfPasswordOwner, SignatureCardData signatureCardData) {
         BouncyCastleProvider providerBC = new BouncyCastleProvider();
         Security.addProvider(providerBC);
         try {
