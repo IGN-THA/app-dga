@@ -1,0 +1,169 @@
+package com.docprocess.model;
+
+import lombok.Data;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import java.io.Serializable;
+import java.sql.Timestamp;
+
+
+@Data
+@Entity
+@Table(name = "pa_main" , schema = "fmsapp")
+@EntityListeners(AuditingEntityListener.class)
+public class PAMain  implements Serializable {
+    @Id
+    private String id;
+
+    @Column(name = "product_type")
+    private String productType;
+
+    @Column(name = "contract_name")
+    private String contractName;
+
+    @Column(name = "quote_name")
+    private String quoteName;
+
+    @Column(name = "insurer_policy_no")
+    private String insurerPolicyNo;
+
+    @Column(name = "plan_type")
+    private String planType;
+
+    @Column(name = "transaction_type")
+    private String transactionType;
+
+    @Column(name = "payment_frequency")
+    private String paymentFrequency;
+
+    @Column(name = "occupation_code")
+    private String occupationCode;
+
+    @Column(name = "occupation_th")
+    private String occupationTh;
+
+    @Column(name = "axa_occupation_class")
+    private String AXAOccupationClass;
+
+    @Column(name = "endorsement_code")
+    private String endorsementCode;
+
+    @Column(name = "header_description")
+    private String headerDescription;
+
+    @Column(name = "cc_comment")
+    private String ccComment;
+
+    @Column(name = "prefer_language")
+    private String preferLanguage;
+
+    @Column(name = "ph_fullname")
+    private String phFullName;
+
+    @Column(name = "ph_gender_print")
+    private String phGenderPrint;
+
+    @Column(name = "ph_dob")
+    private String phDob;
+
+    @Column(name = "ph_dob_to_compare")
+    private String phDobToCompare;
+
+    @Column(name = "current_date_to_compare")
+    private String currentDateToCompare;
+
+    @Column(name = "ph_age")
+    private String phAge;
+
+    @Column(name = "ph_idcard")
+    private String phIDCard;
+
+    @Column(name = "house_number")
+    private String houseNumber;
+
+    @Column(name = "village_building")
+    private String villageBuilding;
+
+    @Column(name = "soi_road")
+    private String soiRoad;
+
+    @Column(name = "sub_district")
+    private String subDistrict;
+
+    @Column(name = "district")
+    private String district;
+
+    @Column(name = "province")
+    private String province;
+
+    @Column(name = "postal_code")
+    private String postalCode;
+
+    @Column(name = "ownerid")
+    private String ownerID;
+
+    @Column(name = "epolicydoc")
+    private String epolicyDoc;
+
+    @Column(name = "header_online_flag")
+    private String headerOnlineFlag;
+
+    @Column(name = "header_en")
+    private String headerEn;
+
+    @Column(name = "header_th")
+    private String headerTh;
+
+    @Column(name = "tax_invoice_desc_th")
+    private String taxInvoiceDescTh;
+
+    @Column(name = "buddist_start_date")
+    private String buddhistStartDate;
+
+    @Column(name = "buddist_end_date")
+    private String buddhistEndDate;
+
+    @Column(name = "buddist_endorsement_effective_date")
+    private String buddhistEndorsementEffectiveDate;
+
+    @Column(name = "buddist_endorsement_end_date")
+    private String buddhistEndorsementEndDate;
+
+    @Column(name = "buddist_last_modified_date")
+    private String buddhistLastModifiedDate;
+
+    @Column(name = "buddist_agreement_date")
+    private String buddhistAgreementDate;
+
+    @Column(name = "currentdate")
+    private String currentDate;
+
+    @Column(name = "current_date_en")
+    private String currentDateEn;
+
+    @Column(name = "buddist_current_date")
+    private String buddhistCurrentDate;
+
+    @Column(name = "transacted_date")
+    private String transactedDate;
+
+    @Column(name = "start_date")
+    private String startDate;
+
+    @Column(name = "end_date")
+    private String endDate;
+
+    @Column(name = "transacted_date__c")
+    private Timestamp transactedDateC;
+
+    @Column(name = "transaction_time")
+    private String transactionTime;
+
+    @Column(name = "policy_start_time")
+    private String policyStartTime;
+}
