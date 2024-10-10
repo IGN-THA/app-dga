@@ -4,7 +4,7 @@
         <Async name="asyncAppender" bufferSize="1024">
             <AppenderRef ref="fileAppender" />
         </Async>
-        <File name="fileAppender" fileName="logs/application.log">
+        <File name="fileAppender" fileName="logs/application-roojai.log">
             <PatternLayout pattern="%d %p %c{1.} [%t] %m%n" />
         </File>
     </Appenders>
