@@ -337,4 +337,10 @@ public class Quote {
 
     @JsonProperty("PAComboSaveStampDuty")
     private BigDecimal PAComboSaveStampDuty;
+
+    @JsonProperty("instalmentPremium")
+    private double instalmentPremium;
+
+    @JsonProperty("firstInstalment")
+    private double firstInstalment;
 }
