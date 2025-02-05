@@ -343,4 +343,7 @@ public class Quote {
 
     @JsonProperty("firstInstalment")
     private double firstInstalment;
+
+    @JsonProperty("leadSource")
+    private String leadSource;
 }

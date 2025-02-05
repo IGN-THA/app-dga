@@ -508,6 +508,8 @@ public class PdfGenerationServiceImpl implements PdfGenerationService {
 
         templateDetail.setVariable("instalmentPremium", setDoubleVariable(ctx.getQuote().getInstalmentPremium()).toString());
         templateDetail.setVariable("firstInstalment", setDoubleVariable(ctx.getQuote().getFirstInstalment()).toString());
+
+        templateDetail.setVariable("leadSource", ctx.getQuote().getLeadSource()!=null? ctx.getQuote().getLeadSource():"");
 //        Set<String> variables = templateDetail.getVariableNames();
 //
 //        logger.info("\nVariables in template");
