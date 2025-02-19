@@ -13,6 +13,7 @@ import com.docprocess.repository.DocumentTypeDataRepository;
 import com.docprocess.service.ApiSigningService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.persistence.EntityManagerFactory;
 import org.apache.commons.text.StringEscapeUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -30,7 +31,6 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import javax.persistence.EntityManagerFactory;
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.time.Duration;

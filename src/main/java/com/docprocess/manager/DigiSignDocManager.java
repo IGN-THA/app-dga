@@ -14,11 +14,6 @@ import com.itextpdf.text.pdf.PdfStamper;
 import com.itextpdf.text.pdf.PdfWriter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import sun.security.pkcs11.SunPKCS11;
-import sun.security.pkcs11.wrapper.CK_C_INITIALIZE_ARGS;
-import sun.security.pkcs11.wrapper.CK_TOKEN_INFO;
-import sun.security.pkcs11.wrapper.PKCS11;
-import sun.security.pkcs11.wrapper.PKCS11Exception;
 
 
 import java.nio.file.Files;
@@ -54,7 +49,7 @@ public class DigiSignDocManager {
         if (!Files.exists(Paths.get(dllPath))) {
             return;
         }
-        slots = getSlotsWithTokens(dllPath, updateToken);
+//        slots = getSlotsWithTokens(dllPath, updateToken);
     }
 
     public OutputStream signDocument(String keyName, Integer slot, String password, InputStream srcStream, String fileName, String pdfPassword) throws Exception {
@@ -65,8 +60,8 @@ public class DigiSignDocManager {
                     "library=" + dllPath + "\n" +
                     "slotListIndex = " + slot;
             ByteArrayInputStream bais = new ByteArrayInputStream(config.getBytes());
-            Provider providerPKCS11 = new SunPKCS11(bais);
-            Security.addProvider(providerPKCS11);
+//            Provider providerPKCS11 = new SunPKCS11(bais);
+//            Security.addProvider(providerPKCS11);
             KeyStore ks = KeyStore.getInstance("PKCS11");
             ks.load(bais, password.toCharArray());
 
@@ -153,7 +148,7 @@ public class DigiSignDocManager {
     }
 
     // Method returns a list of token slot's indexes
-    public long[] getSlotsWithTokens(String libraryPath, Boolean updateToken) {
+    /*public long[] getSlotsWithTokens(String libraryPath, Boolean updateToken) {
         CK_C_INITIALIZE_ARGS initArgs = new CK_C_INITIALIZE_ARGS();
         String functionList = "C_GetFunctionList";
 
@@ -204,7 +199,7 @@ public class DigiSignDocManager {
         }
 
         return slotList;
-    }
+    } */
 
     public OutputStream passwordProtectDocument(InputStream srcStream,  byte[] userPassword, byte[] ownerPassword, String fileDestination) throws IOException, DocumentException {
         com.itextpdf.text.pdf.PdfReader reader = new com.itextpdf.text.pdf.PdfReader(srcStream);

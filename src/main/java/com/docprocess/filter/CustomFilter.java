@@ -1,9 +1,9 @@
 package com.docprocess.filter;
 
+import jakarta.servlet.*;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.*;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component

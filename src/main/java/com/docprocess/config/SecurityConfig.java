@@ -1,42 +1,47 @@
 package com.docprocess.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
+
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
-public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebMvcConfigurer {
+public class SecurityConfig {
 
 
-    @Override
-    protected void configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.headers().frameOptions().deny().and().csrf().disable()
-                .authorizeRequests()
-//                .antMatchers("/",
-//                        "/api/v1/doc/monitor",
-//                        "/api/v1/doc/syncDocument").permitAll()
-//                .antMatchers("/register").hasRole("ADMIN")
-                // all other requests need to be authenticated
-                .anyRequest().permitAll().and()
-        .headers().and()
-                .headers().referrerPolicy(ReferrerPolicyHeaderWriter.ReferrerPolicy.NO_REFERRER);
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.headers().frameOptions().deny().and().csrf().disable()
+                .authorizeRequests(authorizeRequests ->
+                        authorizeRequests
+                                //.antMatchers("/", "/api/v1/doc/monitor", "/api/v1/doc/syncDocument").permitAll()
+                                //.antMatchers("/register").hasRole("ADMIN")
+                                .anyRequest().permitAll()
+                )
+                .headers(headers ->
+                        headers
+                                .referrerPolicy(ReferrerPolicyHeaderWriter.ReferrerPolicy.NO_REFERRER)
+                );
+
+        return http.build();
     }
-    @Override
-    public void addCorsMappings(CorsRegistry registry){
-        registry.addMapping("/**").allowedOrigins("*").allowedMethods("*");
+    @Bean
+    public CorsFilter corsFilter() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowCredentials(true);
+        config.addAllowedOrigin("*");  // Allow all origins
+        config.addAllowedHeader("*");  // Allow all headers
+        config.addAllowedMethod("*");  // Allow all methods
+        source.registerCorsConfiguration("/**", config);
+        return new CorsFilter(source);
     }
+
 }

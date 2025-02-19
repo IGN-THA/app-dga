@@ -1,9 +1,9 @@
 package com.ignite.batch.model;
 
 
+import jakarta.persistence.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.*;
 
 @Entity
 @Table(name = "Schedule_Job_Info", schema = "fmsapp")

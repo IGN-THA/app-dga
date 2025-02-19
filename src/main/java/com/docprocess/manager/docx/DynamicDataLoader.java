@@ -1,44 +1,71 @@
 package com.docprocess.manager.docx;
 
 import com.docprocess.manager.DocumentRenderException;
+import jakarta.persistence.*;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.query.Query;
 import org.hibernate.transform.Transformers;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.persistence.EntityManagerFactory;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 
 public class DynamicDataLoader {
 
 
 
-    public static List getData(String tableName, EntityManagerFactory sessionFactory, String referenceNumber) throws DocumentRenderException{
+    public static List<HashMap<String, Object>> getData(String tableName, EntityManagerFactory entityManagerFactory, String referenceNumber) throws DocumentRenderException {
+        EntityManager entityManager = null;
         try {
-            Session session = sessionFactory.unwrap(SessionFactory.class).openSession();
-            Query q = session.createSQLQuery("select * from " + tableName + " where id='" + referenceNumber + "'");
-            q.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
-            List qList = q.list();
-            session.close();
-            return qList;
-        }catch(Exception e){
-            throw new DocumentRenderException("No Data or Column ID is missing or incorrect value on the input; Table Name: "+tableName+"; Ref Number:"+referenceNumber);
+            entityManager = entityManagerFactory.createEntityManager();
+            String sql = "SELECT * FROM " + tableName + " WHERE id = :referenceNumber";
+            Query query = entityManager.createNativeQuery(sql, Tuple.class);
+            query.setParameter("referenceNumber", referenceNumber);
+            List<Tuple> tuples = query.getResultList();
+            List<HashMap<String, Object>> resultList = tuples.stream()
+                    .map(tuple -> tuple.getElements().stream()
+                            .collect(Collectors.toMap(
+                                    TupleElement::getAlias,
+                                    element -> tuple.get(element.getAlias()),
+                                    (oldValue, newValue) -> newValue,
+                                    HashMap::new
+                            )))
+                    .collect(Collectors.toList());
+            return resultList;
+        } catch (Exception e) {
+            throw new DocumentRenderException("No Data or Column ID is missing or incorrect value on the input; Table Name: " + tableName + "; Ref Number: " + referenceNumber);
+        } finally {
+            if (entityManager != null) {
+                entityManager.close();
+            }
         }
     }
 
-    public static List getDataList(String tableName, EntityManagerFactory sessionFactory, String condition) throws DocumentRenderException{
+    public static List<HashMap<String, Object>> getDataList(String tableName, EntityManagerFactory entityManagerFactory, String condition) throws DocumentRenderException {
+        EntityManager entityManager = null;
         try {
-            Session session = sessionFactory.unwrap(SessionFactory.class).openSession();
-            Query q = session.createSQLQuery("select * from " + tableName + " where " + condition);
-            q.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
-            List qList = q.list();
-            session.close();
-            return qList;
+            entityManager = entityManagerFactory.createEntityManager();
+            String sql = "SELECT * FROM " + tableName + " WHERE " + condition;
+            Query query = entityManager.createNativeQuery(sql, Tuple.class);
+            List<Tuple> tuples = query.getResultList();
+            List<HashMap<String, Object>> resultList = tuples.stream()
+                    .map(tuple -> tuple.getElements().stream()
+                            .collect(Collectors.toMap(
+                                    TupleElement::getAlias,
+                                    element -> tuple.get(element.getAlias()),
+                                    (oldValue, newValue) -> newValue,
+                                    HashMap::new
+                            )))
+                    .collect(Collectors.toList());
+            return resultList;
         } catch (Exception e) {
-            throw new DocumentRenderException("No Data or Column ID is missing or incorrect value on the input; Table Name: " + tableName + "; Condition:" + condition);
+            throw new DocumentRenderException("No Data or Column ID is missing or incorrect value on the input; Table Name: " + tableName + "; Condition: " + condition);
+        } finally {
+            if (entityManager != null) {
+                entityManager.close();
+            }
         }
     }
 }

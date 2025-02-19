@@ -2,7 +2,7 @@ package com.docprocess.model;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import software.amazon.ion.Decimal;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
 

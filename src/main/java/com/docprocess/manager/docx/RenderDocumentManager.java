@@ -6,6 +6,7 @@ import com.docprocess.model.DocumentGenerateQueueData;
 import com.docprocess.repository.ConstantParamRepository;
 import com.docprocess.repository.ExternalApiInfoRepository;
 import com.google.gson.JsonObject;
+import jakarta.persistence.EntityManagerFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -16,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 
-import javax.persistence.EntityManagerFactory;
 import java.io.*;
 import java.util.*;
 

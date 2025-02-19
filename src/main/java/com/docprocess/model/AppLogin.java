@@ -1,9 +1,10 @@
 package com.docprocess.model;
 
 
+import jakarta.persistence.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.*;
+
 import java.io.Serializable;
 
 @Entity

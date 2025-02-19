@@ -1,22 +1,14 @@
 package com.docprocess.model;
 
 
-import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
+import com.vladmihalcea.hibernate.type.json.JsonType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Type;
-import org.hibernate.annotations.TypeDef;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import jakarta.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Map;
@@ -28,7 +20,6 @@ import java.util.Map;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 public class SignatureCardData implements Serializable {
     public SignatureCardData(String signatureCardName, Integer signatureCardSlot, Timestamp createdDate) {
         this.signatureCardName = signatureCardName;
@@ -67,12 +58,12 @@ public class SignatureCardData implements Serializable {
     @Column(name = "flag_signing_using_api")
     private Boolean flagSigningUsingAPI = false;
 
-    @Column(name = "api_config_info")
-    @Type(type = "jsonb")
+    @Column(name = "api_config_info", columnDefinition = "jsonb")
+    @Type(JsonType.class)
     private Map<String, Object> apiConfigInfo;
 
-    @Column(name = "api_request_info")
-    @Type(type = "jsonb")
+    @Column(name = "api_request_info", columnDefinition = "jsonb")
+    @Type(JsonType.class)
     private Map<String, Object> apiRequestInfo;
 
     @Column(name = "flag_soft_token")

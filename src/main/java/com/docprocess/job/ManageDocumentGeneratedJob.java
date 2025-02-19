@@ -15,6 +15,7 @@ import com.docprocess.repository.SignatureCardDataRepository;
 import com.docprocess.repository.SystemConfigRepository;
 import com.docprocess.service.ApiSigningService;
 import com.docprocess.service.CloudSigningService;
+import jakarta.persistence.EntityManagerFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.poi.util.IOUtils;
@@ -25,7 +26,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 
-import javax.persistence.EntityManagerFactory;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;

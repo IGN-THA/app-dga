@@ -72,7 +72,7 @@ public class PdfWorker {
                 .lastElement()
                 .toSingle()
                 .map(__ -> pdfGenerationService.finalizeRenderedFolder(message.getRequestId()))
-                .doOnSuccess(renderedFolder ->{
+                .doOnSuccess(renderedFolder ->{ 
                     Map<String,String> uploadObj=new HashMap<String,String>();
                     uploadObj.put("RenderedFolderPath",renderedFolder.getAbsolutePath());
                     uploadObj.put("CallBackURL",message.getCallBackUrl());

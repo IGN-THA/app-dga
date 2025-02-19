@@ -4,6 +4,7 @@ import com.docprocess.manager.docx.RenderDocumentManager;
 import com.docprocess.model.DocumentGenerateQueueData;
 import com.docprocess.model.DocumentTypeData;
 import com.docprocess.repository.*;
+import jakarta.persistence.EntityManagerFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.quartz.DisallowConcurrentExecution;
@@ -13,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 
-import javax.persistence.EntityManagerFactory;
 import java.io.File;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
