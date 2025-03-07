@@ -21,4 +21,5 @@ public class PdfGenerationRequest implements Serializable {
     private String source;
     private String emailTemplateName;
     private String quoteId;
+    private Boolean flagRequireSign=true;
 }
