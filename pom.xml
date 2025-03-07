@@ -15,7 +15,7 @@
 	<name>DocMngt</name>
 	<description>Document Processing</description>
 	<properties>
-		<java.version>1.8</java.version>
+		<java.version>17</java.version>
 		<openhtml.version>1.0.10</openhtml.version>
 		<spring-cloud-azure.version>4.11.0</spring-cloud-azure.version>
 	</properties>
