@@ -28,14 +28,16 @@ import org.springframework.stereotype.Component;
 import com.docprocess.repository.DocumentTypeDataRepository;
 import com.docprocess.repository.SignatureCardDataRepository;
 import com.docprocess.model.SignatureCardData;
-import java.io.InputStream;
-import java.io.File;
+
+import java.io.*;
+
 import com.docprocess.model.DocumentTypeData;
 import com.docprocess.service.CloudSigningService;
 
 import java.io.File;
 import java.text.MessageFormat;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Component
 public class PdfWorker {
@@ -73,7 +75,7 @@ public class PdfWorker {
 
     @JmsListener(destination = "pdf.generation.request")
     public void processPdfGenerationRequest(PdfGenerationRequest message) {
-        File file = null;
+        AtomicReference<File> file = new AtomicReference<>();
         Observable.fromIterable(pdfGenerationService.getPendingTemplate(message.getRequestId()))
                 .observeOn(Schedulers.io())
                 .map(template ->{
@@ -81,7 +83,7 @@ public class PdfWorker {
                             templateService.getMessageType("i18n.MotorCar")), new TypeReference<LinkedHashMap<String,Object>>() {
                     });
                     Locale locale = getLocale(template);
-                    file = template;
+                    file.set(template);
                     message.getContext().put("created_from",message.getCallBackUrl().contains("documentstatusapi")?"sf":"web");
                     LinkedHashMap<String,Object> localMap =  (LinkedHashMap<String,Object>) templateJson.get(message.getLocale().toUpperCase());
                     return pdfGenerationService.generatePdfFromTemplate(template, message.getRequestId(), message.getContext(),locale, localMap);
@@ -96,8 +98,12 @@ public class PdfWorker {
                     uploadObj.put("EmailTemplateName",message.getEmailTemplateName());
                     uploadObj.put("QuoteId",message.getQuoteId());
                     uploadObj.put("RequestId",message.getRequestId());
+                    uploadObj.put("fileName", file.get().getName());
+                    uploadObj.put("documentType",message.getTemplateType());
+                    String fileStr = FileUtils.readFileToString(file.get(), "UTF-8");
+                    uploadObj.put("fileStr",fileStr);
                     if (message.getFlagRequireSign()) {
-                        jmsTemplate.convertAndSend("pdf.sign.request", uploadObj, file, message.getTemplateType());
+                        jmsTemplate.convertAndSend("pdf.sign.request", uploadObj);
                     } else {
                         jmsTemplate.convertAndSend("pdf.upload.request", uploadObj);
                     }
@@ -113,11 +119,13 @@ public class PdfWorker {
     }
 
     @JmsListener(destination = "pdf.sign.request")
-    public void processPdfSignRequest(Map<String,String> uploadInfo, File fileObj, String documentType) {
+    public void processPdfSignRequest(Map<String,String> uploadInfo) {
         try {
-            InputStream pdfInputStream = new FileInputStream(fileObj);
+            String fileStr = uploadInfo.get("fileStr");
             String tempFilePath = uploadInfo.get("RenderedFolderPath");
-            String fileName = fileObj.getName();
+            String fileName = uploadInfo.get("fileName");
+            String documentType = uploadInfo.get("documentType");
+            InputStream pdfInputStream = new ByteArrayInputStream(fileStr.getBytes());
             DocumentTypeData documentTypeData = documentTypeDataRepository.findByDocumentType(documentType);
             List<SignatureCardData> signatureCardDataList = signatureCardDataRepository.findBySignOwnerAndFlagActive(documentTypeData.getSignOwner(), true);
             SignatureCardData signCardDataObj = !signatureCardDataList.isEmpty() ? signatureCardDataList.get(0) : null;
