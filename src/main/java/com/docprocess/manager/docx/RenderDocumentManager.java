@@ -5,6 +5,8 @@ import com.docprocess.manager.DocumentRenderException;
 import com.docprocess.model.DocumentGenerateQueueData;
 import com.docprocess.repository.ConstantParamRepository;
 import com.docprocess.repository.ExternalApiInfoRepository;
+import com.docprocess.service.QRCodeService;
+import com.docprocess.service.impl.QRCodeServiceImpl;
 import com.google.gson.JsonObject;
 import jakarta.persistence.EntityManagerFactory;
 import org.apache.logging.log4j.LogManager;
@@ -45,6 +47,8 @@ public class RenderDocumentManager {
     ArrayList<XWPFRun> xpfRunList = new ArrayList<XWPFRun>();
     Integer newImageCounter = 0;
     String folderPathForImage  = null;
+
+    private QRCodeService qrCodeService;
 
     static Logger logger = LogManager.getLogger(RenderDocumentManager.class);
     public boolean renderDocFromTemplate(String renderedFilePath, String folderPath, String templatePath, String tableName, EntityManagerFactory sessionFactory, DocumentGenerateQueueData docData, ConstantParamRepository constantParamRepository, ExternalApiInfoRepository externalApiInfoRepository) throws Exception {
@@ -238,7 +242,7 @@ public class RenderDocumentManager {
         int textPos = 0;
         String paraKey = paraText.substring(startKeyPara, endKeyPara+1);
         String searchText = "";
-        Boolean addBarcodeImg=false;
+        Boolean flagImage=false;
         //String barCodeKeyName="";
         Integer frmIndx = 0;
         for (XWPFRun prun : paragraph.getRuns()) {
@@ -312,14 +316,27 @@ public class RenderDocumentManager {
                             if (val != null) st = st.replace("{!" + key + "}", val);
                         } else if (key.startsWith("BARCODE")) {
                             if(newImageCounter<1) {
-                                addBarcodeImg = generateBarCode(prun, key, variables);
+                                flagImage = generateBarCode(prun, key, variables);
                                 //barCodeKeyName = key;
-                                if (addBarcodeImg) {
+                                if (flagImage) {
                                     st = st.replace("{!" + key + "}", "");
                                     newImageCounter++;
                                 }
                             }else{
-                                addBarcodeImg=true;
+                                flagImage=true;
+                                newImageCounter++;
+                                return;
+                            }
+                        }else if (key.startsWith("QRCODE")) {
+                            if(newImageCounter<1) {
+                                flagImage = generateQRCode(prun, key, variables);
+
+                                if (flagImage) {
+                                    st = st.replace("{!" + key + "}", "");
+                                    newImageCounter++;
+                                }
+                            }else{
+                                flagImage=true;
                                 newImageCounter++;
                                 return;
                             }
@@ -349,8 +366,8 @@ public class RenderDocumentManager {
                         } else if (key.startsWith("IMAGE")) {
                             //String keyVal = key.substring(key.indexOf("(") + 1, key.length() - 1);
                             //String val = (variables.get(keyVal) != null) ? variables.get(keyVal).toString() : "Scenario_1";
-                            addBarcodeImg = printImage(prun, key, variables);
-                            if (addBarcodeImg) {
+                            flagImage = printImage(prun, key, variables);
+                            if (flagImage) {
                                 st = st.replace("{!" + key + "}", "");
                                 newImageCounter++;
                             }else{
@@ -399,7 +416,7 @@ public class RenderDocumentManager {
                         //}
                         frmIndx ++;
                     }
-                    if (st.trim().length() == 0 && !addBarcodeImg && !xpfRunList.contains(prun)) {
+                    if (st.trim().length() == 0 && !flagImage && !xpfRunList.contains(prun)) {
                         removeParamElementList.add(intXPRun);
                         removeElement = true;
                     } else {
@@ -434,7 +451,7 @@ public class RenderDocumentManager {
             removeElement(removeParamElementList, paragraph);
         }
 
-        //if(addBarcodeImg){
+        //if(flagImage){
 //            XWPFRun run = paragraph.createRun();
 //            generateBarCode(run, barCodeKeyName, variables);
 //        }
@@ -557,5 +574,33 @@ public class RenderDocumentManager {
         return false;
     }
 
+    private Boolean generateQRCode(XWPFRun prun, String key, Map<String, ?> mappings) {
+        int startKey = key.indexOf('(');
+        if (startKey == -1)
+            return null;
+        else {
+            int keyEnd = key.indexOf(41, startKey);
+            String qrCodeParam = key.substring(startKey + 1, keyEnd);
+            String[] qrCodeParamArray =  qrCodeParam.split(",");
+            if(qrCodeParamArray.length==3) {
+                qrCodeService = new QRCodeServiceImpl();
+                InputStream inStream = qrCodeService.generateQRCode(mappings.get(qrCodeParamArray[0]).toString(), Integer.parseInt(qrCodeParamArray[1]), Integer.parseInt(qrCodeParamArray[2]));
+                if(inStream!=null) {
+                    try {
+                        prun.addPicture(inStream, XWPFDocument.PICTURE_TYPE_PNG, "ImageFile", Units.toEMU(Integer.parseInt(qrCodeParamArray[1])-80), Units.toEMU(Integer.parseInt(qrCodeParamArray[2])-35));
+                        inStream.close();
+                        return true;
+                    } catch (InvalidFormatException e) {
+                        String errorMessage = ErrorConfig.getErrorMessages(RenderDocumentManager.class.getName(), "generateQRCode", e);
+                        logger.error(errorMessage);
+                    } catch (IOException e) {
+                        String errorMessage = ErrorConfig.getErrorMessages(RenderDocumentManager.class.getName(), "generateQRCode", e);
+                        logger.error(errorMessage);
+                    }
+                }
+            }
+        }
+        return false;
+    }
 
 }
