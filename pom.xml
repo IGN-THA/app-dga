@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.7.16</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+	<groupId>com.docprocess</groupId>
+	<artifactId>DocMngt</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>war</packaging>
+	<name>DocMngt</name>
+	<description>Document Processing</description>
+	<properties>
+		<java.version>1.8</java.version>
+		<openhtml.version>1.0.10</openhtml.version>
+		<spring-cloud-azure.version>4.11.0</spring-cloud-azure.version>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.11.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-batch</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
+		<dependency>
+			<!-- SVG support plugin. -->
+			<groupId>com.openhtmltopdf</groupId>
+			<artifactId>openhtmltopdf-svg-support</artifactId>
+			<version>${openhtml.version}</version>
+		</dependency>
+		<dependency>
+			<!-- Required for PDF output. -->
+			<groupId>com.openhtmltopdf</groupId>
+			<artifactId>openhtmltopdf-pdfbox</artifactId>
+			<version>${openhtml.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz</artifactId>
+			<version>2.3.2</version>
+		</dependency>
+		<!--      <dependency>-->
+		<!--         <groupId>org.apache.logging.log4j</groupId>-->
+		<!--         <artifactId>log4j-core</artifactId>-->
+		<!--         <version>2.12.1</version>-->
+		<!--      </dependency>-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-log4j2</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.itextpdf</groupId>
+			<artifactId>itextpdf</artifactId>
+			<version>5.5.13</version>
+		</dependency>
+		<dependency>
+			<groupId>com.itextpdf</groupId>
+			<artifactId>kernel</artifactId>
+			<version>7.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.itextpdf</groupId>
+			<artifactId>sign</artifactId>
+			<version>7.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-java-sdk-core</artifactId>
+			<version>1.12.168</version>
+		</dependency>
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-java-sdk-s3</artifactId>
+			<version>1.11.604</version>
+		</dependency>
+		<dependency>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bcpkix-jdk15on</artifactId>
+			<version>1.65</version>
+		</dependency>
+		<dependency>
+			<groupId>org.xipki.iaik</groupId>
+			<artifactId>sunpkcs11-wrapper</artifactId>
+			<version>1.4.6</version>
+		</dependency>
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>42.2.17</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>1.4</version>
+		</dependency>
+		<!--      <dependency>-->
+		<!--         <groupId>org.springframework.boot</groupId>-->
+		<!--         <artifactId>spring-boot-starter-batch</artifactId>-->
+		<!--      </dependency>-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-quartz</artifactId>
+		</dependency>
+		<!--dependency>
+           <groupId>fr.opensagres.xdocreport</groupId>
+           <artifactId>fr.opensagres.xdocreport.converter.docx.xwpf</artifactId>
+           <version>2.0.2</version>
+        </dependency-->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>4.1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.python</groupId>
+			<artifactId>jython-standalone</artifactId>
+			<version>2.7.1</version>
+		</dependency>
+		<!--      <dependency>-->
+		<!--         <groupId>com.google.zxing</groupId>-->
+		<!--         <artifactId>core</artifactId>-->
+		<!--         <version>3.4.0</version>-->
+		<!--      </dependency>-->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+		</dependency>
+		<!--      <dependency>-->
+		<!--         <groupId>com.google.zxing</groupId>-->
+		<!--         <artifactId>javase</artifactId>-->
+		<!--         <version>3.4.0</version>-->
+		<!--      </dependency>-->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-exec</artifactId>
+			<version>1.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.junit.vintage</groupId>
+					<artifactId>junit-vintage-engine</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.vladmihalcea</groupId>
+			<artifactId>hibernate-types-52</artifactId>
+			<version>2.19.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-text</artifactId>
+			<version>1.10.0</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.reactivex.rxjava3</groupId>
+			<artifactId>rxjava</artifactId>
+			<version>3.1.5</version>
+		</dependency>
+		<dependency>
+			<groupId>io.reactivex</groupId>
+			<artifactId>rxjava-reactive-streams</artifactId>
+			<version>1.2.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-activemq</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.activemq</groupId>
+			<artifactId>activemq-broker</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.google.zxing</groupId>
+			<artifactId>core</artifactId>
+			<version>3.5.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.zxing</groupId>
+			<artifactId>javase</artifactId>
+			<version>3.5.0</version>
+		</dependency>
+		<!--      <dependency>-->
+		<!--         <groupId>org.xhtmlrenderer</groupId>-->
+		<!--         <artifactId>flying-saucer-pdf-itext5</artifactId>-->
+		<!--         <version>9.0.1</version>-->
+		<!--      </dependency>-->
+		<dependency>
+			<groupId>com.microsoft.playwright</groupId>
+			<artifactId>playwright</artifactId>
+			<version>1.30.0</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.jsoup/jsoup -->
+		<!--      <dependency>-->
+		<!--         <groupId>org.jsoup</groupId>-->
+		<!--         <artifactId>jsoup</artifactId>-->
+		<!--         <version>1.15.3</version>-->
+		<!--      </dependency>-->
+
+		<!--      <dependency>-->
+		<!--         <groupId>com.github.kklisura.cdt</groupId>-->
+		<!--         <artifactId>cdt-java-client</artifactId>-->
+		<!--         <version>4.0.0</version>-->
+		<!--      </dependency>-->
+
+		<!--      <dependency>-->
+		<!--         <groupId>com.itextpdf</groupId>-->
+		<!--         <artifactId>html2pdf</artifactId>-->
+		<!--         <version>3.0.1</version>-->
+		<!--      </dependency>-->
+		<!--      <dependency>-->
+		<!--         <groupId>com.itextpdf</groupId>-->
+		<!--         <artifactId>kernel</artifactId>-->
+		<!--         <version>7.1.12</version>-->
+		<!--      </dependency>-->
+		<!--      &lt;!&ndash; https://mvnrepository.com/artifact/com.itextpdf/itextpdf &ndash;&gt;-->
+		<!--      <dependency>-->
+		<!--         <groupId>com.itextpdf</groupId>-->
+		<!--         <artifactId>itextpdf</artifactId>-->
+		<!--         <version>5.5.13.3</version>-->
+		<!--      </dependency>-->
+		<!--      &lt;!&ndash; https://mvnrepository.com/artifact/com.itextpdf/font-asian &ndash;&gt;-->
+		<!--      <dependency>-->
+		<!--         <groupId>com.itextpdf</groupId>-->
+		<!--         <artifactId>font-asian</artifactId>-->
+		<!--         <version>7.2.5</version>-->
+		<!--         <scope>test</scope>-->
+		<!--      </dependency>-->
+		<!--      <dependency>-->
+		<!--         <groupId>com.itextpdf</groupId>-->
+		<!--         <artifactId>html2pdf</artifactId>-->
+		<!--         <version>3.0.1</version>-->
+		<!--      </dependency>-->
+		<!--      &lt;!&ndash; https://mvnrepository.com/artifact/com.itextpdf/layout &ndash;&gt;-->
+		<!--      <dependency>-->
+		<!--         <groupId>com.itextpdf</groupId>-->
+		<!--         <artifactId>layout</artifactId>-->
+		<!--         <version>7.2.5</version>-->
+		<!--      </dependency>-->
+		<!--      &lt;!&ndash; https://mvnrepository.com/artifact/com.itextpdf/commons &ndash;&gt;-->
+		<!--      <dependency>-->
+		<!--         <groupId>com.itextpdf</groupId>-->
+		<!--         <artifactId>commons</artifactId>-->
+		<!--         <version>7.2.5</version>-->
+		<!--      </dependency>-->
+
+		<!-- https://mvnrepository.com/artifact/com.azure.spring/azure-spring-boot-starter-keyvault-certificates -->
+		<!--      <dependency>-->
+		<!--         <groupId>com.azure</groupId>-->
+		<!--         <artifactId>azure-security-keyvault-secrets</artifactId>-->
+		<!--         <version>4.2.3</version>-->
+		<!--      </dependency>-->
+
+		<!--      <dependency>-->
+		<!--         <groupId>com.azure</groupId>-->
+		<!--         <artifactId>azure-identity</artifactId>-->
+		<!--         <version>1.2.0</version>-->
+		<!--      </dependency>-->
+
+
+		<dependency>
+			<groupId>com.azure</groupId>
+			<artifactId>azure-security-keyvault-certificates</artifactId>
+			<version>4.5.6</version>
+		</dependency>
+		<dependency>
+			<groupId>com.azure</groupId>
+			<artifactId>azure-identity</artifactId>
+			<version>1.10.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.netty</groupId>
+			<artifactId>netty-handler</artifactId>
+			<version>4.1.99.Final</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.netty</groupId>
+			<artifactId>netty-tcnative-boringssl-static</artifactId>
+			<version>2.0.61.Final</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.netty</groupId>
+			<artifactId>netty-common</artifactId>
+			<version>4.1.100.Final</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.projectreactor</groupId>
+			<artifactId>reactor-core</artifactId>
+			<version>3.5.5</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.codehaus.jettison/jettison -->
+		<dependency>
+			<groupId>org.codehaus.jettison</groupId>
+			<artifactId>jettison</artifactId>
+			<version>1.5.4</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>32.1.3-jre</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/com.azure/azure-security-keyvault-secrets -->
+		<dependency>
+			<groupId>com.azure</groupId>
+			<artifactId>azure-security-keyvault-secrets</artifactId>
+			<version>4.6.5</version>
+		</dependency>
+
+
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>${parent.version}</version>
+			</plugin>
+		</plugins>
+	</build>
+</project>
